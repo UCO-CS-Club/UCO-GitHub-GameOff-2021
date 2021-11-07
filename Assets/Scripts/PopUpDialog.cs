@@ -5,11 +5,13 @@ using UnityEngine.UI;
 
 public class PopUpDialog : MonoBehaviour
 {
-    [SerializeField] public GameObject dialogPanel;
+    [SerializeField] public GameObject dialogBoxPrefab;
     [SerializeField] float normalTextSpeed = 0.035f;
     [SerializeField] float fastTextSpeed = 0.010f;
     [SerializeField] Color textColor = Color.white;
     [SerializeField] Color backgroundColor = Color.black;
+    public Animator anim;
+
 
 
     Text text;
@@ -30,7 +32,7 @@ public class PopUpDialog : MonoBehaviour
         if (isMouseOneDown && textFinished)
         {
             GameTime.Play();
-            dialogPanel.SetActive(false);
+            dialogBoxPrefab.SetActive(false);
         }
         else if (isMouseOneDown)
             textSpeed = fastTextSpeed;
@@ -39,7 +41,7 @@ public class PopUpDialog : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        text = dialogPanel.GetComponentInChildren<Text>();
+        text = dialogBoxPrefab.GetComponentInChildren<Text>();
 
         textSpeed = normalTextSpeed;
         textFinished = false;
@@ -48,20 +50,11 @@ public class PopUpDialog : MonoBehaviour
         text.color = textColor;
 
 
-        dialogPanel.SetActive(true);
+        dialogBoxPrefab.SetActive(true);
         GameTime.Pause();
 
         StartCoroutine("PlayText");
     }
-
-    //private void OnTriggerEnter2D(Collider2D collision)
-    //{
-    //    story = txt.text;
-    //    txt.text = "";
-
-    //    // TODO: add optional delay when to start
-    //    StartCoroutine("PlayText");
-    //}
 
     IEnumerator PlayText()
     {
