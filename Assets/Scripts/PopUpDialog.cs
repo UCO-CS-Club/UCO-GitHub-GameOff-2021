@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -29,6 +30,7 @@ public class PopUpDialog : MonoBehaviour
     void Update()
     {
         bool isMouseOneDown = Input.GetMouseButtonDown(0);
+
         if (isMouseOneDown && textFinished)
         {
             GameTime.Play();
@@ -41,7 +43,11 @@ public class PopUpDialog : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        // disables collider
+        GetComponent<BoxCollider2D>().enabled = false;
+
         text = dialogBoxPrefab.GetComponentInChildren<Text>();
+        Debug.Log(text);
 
         textSpeed = normalTextSpeed;
         textFinished = false;
