@@ -73,11 +73,7 @@
       "dependencies": {}
     },
     "com.unity.collab-proxy": {
-<<<<<<< Updated upstream
       "version": "1.13.5",
-=======
-      "version": "1.11.2",
->>>>>>> Stashed changes
       "depth": 0,
       "source": "registry",
       "dependencies": {
