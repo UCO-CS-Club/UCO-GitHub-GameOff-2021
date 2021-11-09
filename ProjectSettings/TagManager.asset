@@ -11,11 +11,11 @@ TagManager:
   - 
   - Water
   - UI
+  - BackgroundObjects
+  - Floor
   - 
-  - 
-  - 
-  - 
-  - 
+  - Player
+  - PassThroughWalls
   - 
   - 
   - 
@@ -40,4 +40,13 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: BackgroundOBJ
+    uniqueID: 3901346473
+    locked: 0
+  - name: Player
+    uniqueID: 2312915763
+    locked: 0
+  - name: Floor
+    uniqueID: 3430212811
     locked: 0
