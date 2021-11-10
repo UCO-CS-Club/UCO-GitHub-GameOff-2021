@@ -12,17 +12,15 @@ public class Movement : MonoBehaviour
     public float jumpVelocity;
     string buttonPressed;
     bool Grounded;
-    
-
-
     // test 
     //private Rigidbody2D rb;
     public float dashSpeed;
     private float dashTime;
     public float startDashTime;
-    private int direction;
+    private int direction = 1; // default value
     public GameObject dashEffect;
     bool isDashing;
+    bool startCooldown = false;
 
     // Start is called before the first frame update
     void Start()
@@ -37,11 +35,13 @@ public class Movement : MonoBehaviour
         if (Input.GetKey(KeyCode.A))
         {
             buttonPressed = LEFT;
+            direction = 2;
             //transform.position += transform.right * (Time.deltaTime * 5);
         }
         else if (Input.GetKey(KeyCode.D))
         {
             buttonPressed = RIGHT;
+            direction = 1;
             //transform.position += transform.right * (Time.deltaTime * 5);
         }
         else
@@ -53,32 +53,40 @@ public class Movement : MonoBehaviour
             buttonPressed = JUMP;
         }
 
-        if (direction == 0)
+        if (startCooldown)
         {
-            if (Input.GetKey(KeyCode.E))
+            dashTime -= Time.deltaTime;
+        }
+
+        if (dashTime <= 0)
+        {
+            isDashing = false;
+            startCooldown = false;
+        }
+
+        if (Input.GetKeyDown(KeyCode.E) && !isDashing)
+        {
+            isDashing = true;
+            Dash();
+            /*if (Input.GetKeyDown(KeyCode.D))
             {
-                isDashing = true;
-                if (Input.GetKeyDown(KeyCode.D))
-                {
 
-                    direction = 1;
-                    Dash();
+                direction = 1;
+                Dash();
 
-                }
-                if (Input.GetKeyDown(KeyCode.A))
-                {
-                    direction = 2;
-                    Dash();
-                }
-                else
-                {
-                    direction = 1;
-                    Dash();
-
-                }
-                isDashing = false;
             }
+            if (Input.GetKeyDown(KeyCode.A))
+            {
+                direction = 2;
+                Dash();
+            }
+            else
+            {
+                direction = 1;
+                Dash();
 
+            }
+            isDashing = false;*/
         }
 
 
@@ -96,20 +104,13 @@ public class Movement : MonoBehaviour
             {
                 rb.velocity = new Vector2(-speed, rb.velocity.y);
             }
-            else if (buttonPressed == JUMP)
-            {
-                rb.AddForce(new Vector2(0, jumpVelocity), ForceMode2D.Impulse);
-            }
-
-            else
-            {
-                //rb.velocity = new Vector2(0, rb.velocity.y);
-            }
         }
-        
+        if (buttonPressed == JUMP)
+        {
+            rb.AddForce(new Vector2(0, jumpVelocity), ForceMode2D.Impulse);
+        }
 
     }
-    
 
     void OnCollisionStay2D(Collision2D collider)
     {
@@ -137,32 +138,32 @@ public class Movement : MonoBehaviour
     }
     void Dash()
     {
-
-        
-        if (dashTime <= 0)
+        Instantiate(dashEffect, transform.position, Quaternion.identity);
+        //direction = 0;
+        dashTime = startDashTime;
+        //rb.velocity = Vector2.zero;// I ran into a problem where if you press the dash butto it would not reset
+        /*if (dashTime <= 0)
         {
             Instantiate(dashEffect, transform.position, Quaternion.identity);
             isDashing = false;
             direction = 0;
             dashTime = startDashTime;
             rb.velocity = Vector2.zero;// I ran into a problem where if you press the dash butto it would not reset
+            dashTime -= Time.deltaTime;
         }
         else
         {
             dashTime -= Time.deltaTime;
-        }
+        }*/
         if (direction == 1)
         {
             rb.velocity = Vector2.right * dashSpeed;
-
         }
         else if (direction == 2)
         {
             rb.velocity = Vector2.left * dashSpeed;
-
         }
-        
-
+        startCooldown = true;
 
     }
 

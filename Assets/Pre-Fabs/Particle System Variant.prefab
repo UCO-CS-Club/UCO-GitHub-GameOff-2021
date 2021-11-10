@@ -91,6 +91,22 @@ PrefabInstance:
       propertyPath: InitialModule.startSizeZ.minMaxState
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 4585629905312140805, guid: 78d3524f0b0f5b24099e231757ba87bd, type: 3}
+      propertyPath: ForceModule.enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4585629905312140805, guid: 78d3524f0b0f5b24099e231757ba87bd, type: 3}
+      propertyPath: InheritVelocityModule.enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4585629905312140805, guid: 78d3524f0b0f5b24099e231757ba87bd, type: 3}
+      propertyPath: CollisionModule.m_Planes.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4585629905312140807, guid: 78d3524f0b0f5b24099e231757ba87bd, type: 3}
+      propertyPath: m_Name
+      value: Particle System Variant
+      objectReference: {fileID: 0}
     - target: {fileID: 8097936029978819551, guid: 78d3524f0b0f5b24099e231757ba87bd, type: 3}
       propertyPath: m_Name
       value: Particle System
