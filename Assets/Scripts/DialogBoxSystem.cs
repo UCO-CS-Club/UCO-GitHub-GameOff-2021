@@ -15,7 +15,7 @@ public class DialogBoxSystem : MonoBehaviour
     string story;
     float textSpeed;
     bool textFinished;
-    GameObject dialogBox;
+    public GameObject dialogBox;
     Animator anim;
 
     // Start is called before the first frame update
@@ -35,7 +35,7 @@ public class DialogBoxSystem : MonoBehaviour
 
             if (isMouseOneDown && textFinished)
             {
-                dialogBox.SetActive(false);
+                anim.SetTrigger("close");
                 isPopUpActive = false;
                 GameTime.Play();
             }
@@ -46,13 +46,14 @@ public class DialogBoxSystem : MonoBehaviour
 
     public void Open(string message, GameObject dialogBox, Animator anim)
     {
+        this.dialogBox = dialogBox;
+        this.anim = anim;
         textFinished = false;
 
         // Setting up for type writer effect and flipping flag that so input is now being checked (Mouse1)
         //  Mouse1 closes the dialog box when the text is finished being displayed (see Update() )
         textComponent = dialogBox.GetComponentInChildren<TMP_Text>();
-        Debug.Log("TextComponent");
-        Debug.Log(textComponent);
+
         isPopUpActive = true;
         textSpeed = normalTextSpeed;
         textComponent.text = "";
@@ -74,5 +75,10 @@ public class DialogBoxSystem : MonoBehaviour
         }
 
         textFinished = true;
+    }
+
+    public GameObject getDialogBoxGameObject()
+    {
+        return dialogBox;
     }
 }

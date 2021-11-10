@@ -133,11 +133,15 @@ PrefabInstance:
     - target: {fileID: 445777617984576627, guid: 9b6630283c36c804d8e37efdafb1d332, type: 3}
       propertyPath: anim
       value: 
-      objectReference: {fileID: 1700773735}
+      objectReference: {fileID: 1370636808}
     - target: {fileID: 445777617984576627, guid: 9b6630283c36c804d8e37efdafb1d332, type: 3}
       propertyPath: dialogBox
       value: 
-      objectReference: {fileID: 1700773734}
+      objectReference: {fileID: 1370636807}
+    - target: {fileID: 445777617984576627, guid: 9b6630283c36c804d8e37efdafb1d332, type: 3}
+      propertyPath: dialogBoxText
+      value: The quick brown fox jumped over the lazy dog.
+      objectReference: {fileID: 0}
     - target: {fileID: 8721068606964177400, guid: 9b6630283c36c804d8e37efdafb1d332, type: 3}
       propertyPath: m_Name
       value: DialogBoxTrigger
@@ -349,7 +353,7 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_Children:
-  - {fileID: 1700773736}
+  - {fileID: 1654891247}
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -358,6 +362,28 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!1 &1370636807 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5757471398752729451, guid: 19333e19df476304f8921bd33bb65f85, type: 3}
+  m_PrefabInstance: {fileID: 1654891246}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &1370636808 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 2025114284536235838, guid: 19333e19df476304f8921bd33bb65f85, type: 3}
+  m_PrefabInstance: {fileID: 1654891246}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1370636809
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1370636807}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: faf5ccaa298d67447b5bbb5fe8ce4997, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1511812320
 GameObject:
   m_ObjectHideFlags: 0
@@ -499,6 +525,7 @@ MonoBehaviour:
   normalTextSpeed: 0.035
   fastTextSpeed: 0.01
   textColor: {r: 1, g: 1, b: 1, a: 1}
+  dialogBox: {fileID: 0}
 --- !u!4 &1576854710
 Transform:
   m_ObjectHideFlags: 0
@@ -513,22 +540,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1700773734 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 5757471398752729451, guid: 19333e19df476304f8921bd33bb65f85, type: 3}
-  m_PrefabInstance: {fileID: 1724154980}
-  m_PrefabAsset: {fileID: 0}
---- !u!95 &1700773735 stripped
-Animator:
-  m_CorrespondingSourceObject: {fileID: 2025114284536235838, guid: 19333e19df476304f8921bd33bb65f85, type: 3}
-  m_PrefabInstance: {fileID: 1724154980}
-  m_PrefabAsset: {fileID: 0}
---- !u!224 &1700773736 stripped
-RectTransform:
-  m_CorrespondingSourceObject: {fileID: 8874034229351257490, guid: 19333e19df476304f8921bd33bb65f85, type: 3}
-  m_PrefabInstance: {fileID: 1724154980}
-  m_PrefabAsset: {fileID: 0}
---- !u!1001 &1724154980
+--- !u!1001 &1654891246
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -541,7 +553,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5757471398752729451, guid: 19333e19df476304f8921bd33bb65f85, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8874034229351257490, guid: 19333e19df476304f8921bd33bb65f85, type: 3}
       propertyPath: m_Pivot.x
@@ -573,11 +585,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8874034229351257490, guid: 19333e19df476304f8921bd33bb65f85, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 832
+      value: 695.1007
       objectReference: {fileID: 0}
     - target: {fileID: 8874034229351257490, guid: 19333e19df476304f8921bd33bb65f85, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 137.8796
+      value: 95.3298
       objectReference: {fileID: 0}
     - target: {fileID: 8874034229351257490, guid: 19333e19df476304f8921bd33bb65f85, type: 3}
       propertyPath: m_LocalPosition.x
@@ -613,7 +625,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8874034229351257490, guid: 19333e19df476304f8921bd33bb65f85, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 174
+      value: 89.335
       objectReference: {fileID: 0}
     - target: {fileID: 8874034229351257490, guid: 19333e19df476304f8921bd33bb65f85, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -629,6 +641,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 19333e19df476304f8921bd33bb65f85, type: 3}
+--- !u!224 &1654891247 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 8874034229351257490, guid: 19333e19df476304f8921bd33bb65f85, type: 3}
+  m_PrefabInstance: {fileID: 1654891246}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1816335274
 GameObject:
   m_ObjectHideFlags: 0
