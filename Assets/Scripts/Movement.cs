@@ -4,16 +4,15 @@ using UnityEngine;
 
 public class Movement : MonoBehaviour
 {
+    [SerializeField]private LayerMask groundLayer;
     private Rigidbody2D rb;
     public const string LEFT = "Left";
     public const string RIGHT = "Right";
     public const string JUMP = "Space";
-    public int speed;
+    [SerializeField] public int speed;
     public float jumpVelocity;
     string buttonPressed;
-    bool Grounded;
-    // test 
-    //private Rigidbody2D rb;
+
     public float dashSpeed;
     private float dashTime;
     public float startDashTime;
@@ -21,34 +20,32 @@ public class Movement : MonoBehaviour
     public GameObject dashEffect;
     bool isDashing;
     bool startCooldown = false;
+    private BoxCollider2D boxCollider;
 
     // Start is called before the first frame update
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
-        
-    }
 
-    // Update is called once per frame
+        boxCollider = GetComponent<BoxCollider2D>();
+    }
     void Update()
     {
         if (Input.GetKey(KeyCode.A))
         {
             buttonPressed = LEFT;
             direction = 2;
-            //transform.position += transform.right * (Time.deltaTime * 5);
         }
         else if (Input.GetKey(KeyCode.D))
         {
             buttonPressed = RIGHT;
             direction = 1;
-            //transform.position += transform.right * (Time.deltaTime * 5);
         }
         else
         {
             buttonPressed = null;
         }
-        if (Input.GetKey(KeyCode.Space)&& Grounded == true)
+        if (Input.GetKey(KeyCode.Space)&& isGrounded())
         {
             buttonPressed = JUMP;
         }
@@ -68,30 +65,9 @@ public class Movement : MonoBehaviour
         {
             isDashing = true;
             Dash();
-            /*if (Input.GetKeyDown(KeyCode.D))
-            {
-
-                direction = 1;
-                Dash();
-
-            }
-            if (Input.GetKeyDown(KeyCode.A))
-            {
-                direction = 2;
-                Dash();
-            }
-            else
-            {
-                direction = 1;
-                Dash();
-
-            }
-            isDashing = false;*/
         }
-
-
     }
-    // We then make another fuction for what the button was
+
     private void FixedUpdate()
     {
         if (!isDashing)
@@ -112,49 +88,19 @@ public class Movement : MonoBehaviour
 
     }
 
-    void OnCollisionStay2D(Collision2D collider)
+
+    private bool isGrounded()
     {
-        CheckIfGrounded();
-    }
 
-    void OnCollisionExit2D(Collision2D collider)
-    {
-        Grounded = false;
-    }
-
-    private void CheckIfGrounded()
-    {
-        RaycastHit2D[] hits;
-
-        //We raycast down 1 pixel from this position to check for a collider
-        Vector2 positionToCheck = transform.position;
-        hits = Physics2D.RaycastAll(positionToCheck, new Vector2(0, -1), 0.01f);
-
-        //if a collider was hit, we are grounded
-        if (hits.Length > 0)
-        {
-            Grounded = true;
-        }
+        RaycastHit2D hits = Physics2D.BoxCast(boxCollider.bounds.center, boxCollider.bounds.size, 0, Vector2.down, 0.1f,groundLayer);//Center Size and 0
+        return hits.collider != null;
+        // Maybe find a way to togle is grounded to get the sling shot effect
+        
     }
     void Dash()
     {
         Instantiate(dashEffect, transform.position, Quaternion.identity);
-        //direction = 0;
         dashTime = startDashTime;
-        //rb.velocity = Vector2.zero;// I ran into a problem where if you press the dash butto it would not reset
-        /*if (dashTime <= 0)
-        {
-            Instantiate(dashEffect, transform.position, Quaternion.identity);
-            isDashing = false;
-            direction = 0;
-            dashTime = startDashTime;
-            rb.velocity = Vector2.zero;// I ran into a problem where if you press the dash butto it would not reset
-            dashTime -= Time.deltaTime;
-        }
-        else
-        {
-            dashTime -= Time.deltaTime;
-        }*/
         if (direction == 1)
         {
             rb.velocity = Vector2.right * dashSpeed;
