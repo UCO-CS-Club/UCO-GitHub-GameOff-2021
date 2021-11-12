@@ -17,7 +17,7 @@ public class DialogBoxTrigger : MonoBehaviour
     private void Update()
     {
         // update if interaction key is being pressed
-        interactKeyPressed = Input.GetKey(Constants.interactionKey);
+        interactKeyPressed = Input.GetKey(Constants.INTERACTION_KEY);
 
         // the player has pressed the interaction key, there is not a current pop up running, and the player is within the dialog box trigger
         if (interactKeyPressed && !DialogBoxSystem.isPopUpActive && inInteractRange)

@@ -1,21 +1,23 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class BuggySpriteMovement : MonoBehaviour
 {
-    Player player;
-    int frameCount = 0;
+    [Range(0, 75)]
+    [SerializeField] float followSpeed = 50f;
+
+
+    Rigidbody2D playerBody;
+    Rigidbody2D body;
 
     // Start is called before the first frame update
     void Start()
     {
-        player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
+        playerBody = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>().GetComponent<Rigidbody2D>();
+        body = GetComponent<Rigidbody2D>();
     }
 
-    // Update is called once per frame
-    void Update()
+    private void FixedUpdate()
     {
-        
+        body.position = Vector2.Lerp(body.position, playerBody.position, followSpeed * Time.deltaTime);
     }
 }

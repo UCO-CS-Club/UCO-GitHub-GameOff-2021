@@ -4,5 +4,6 @@ using UnityEngine;
 
 public static class Constants
 {
-    [SerializeField] public static KeyCode interactionKey = KeyCode.T;
+    public static readonly KeyCode INTERACTION_KEY = KeyCode.T;
+    public static readonly KeyCode JUMP_KEY = KeyCode.Space;
 }
