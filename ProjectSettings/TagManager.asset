@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 2
   tags:
   - GameManager
+  - InvertColorBlock
   layers:
   - Default
   - TransparentFX
