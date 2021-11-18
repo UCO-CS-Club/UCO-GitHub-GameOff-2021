@@ -13,13 +13,17 @@ public class GravityGlitchLevelController : MonoBehaviour
     private const float grav = 9.8f;
 
     // sequence key:
-    //  - u: up
-    //  - r: right
-    //  - d: down
-    //  - l: left
+    //  - u: up (player head facing up)
+    //  - r: right (player head facing right)
+    //  - d: down (player head facing down)
+    //  - l: left (player head facing left)
     string currentSequence;
-    string lvl1Sequence = "urdl";
+    string lvl1Sequence = "dlur";
     int gravSequenceCounter = 0;
+
+    GameObject player;
+
+    static public Vector3 playerHeadUpDirection = Vector3.up;
 
 
 
@@ -27,6 +31,8 @@ public class GravityGlitchLevelController : MonoBehaviour
     void Start()
     {
         currentSequence = lvl1Sequence;
+        player = GameObject.FindGameObjectWithTag("Player");
+
     }
 
     // Update is called once per frame
@@ -51,29 +57,28 @@ public class GravityGlitchLevelController : MonoBehaviour
     void ChangeGravity(char d)
     {
         Debug.Log(d);
-        Debug.Log(Physics2D.gravity);
+
+        playerHeadUpDirection = Vector3.up;
         switch (d)
         {
-            case 'u': // Up
-                transform.eulerAngles = new Vector3(
-                transform.eulerAngles.x,
-                transform.eulerAngles.y,
-                transform.eulerAngles.z + 180
-            );
+            case 'd': // Gravity Down (player head facing down)
+                playerHeadUpDirection = Vector3.down;
                 Physics2D.gravity = new Vector2(0, grav);
                 break;
-            case 'd': // Down
-                 
+            case 'u': // Gravity Up (player head facing up)
+                playerHeadUpDirection = Vector3.up;
                 Physics2D.gravity = new Vector2(0, grav * -1);
                 break;
-            case 'l': // Left
-
+            case 'r': // Gravity Right (player head facing right)
+                playerHeadUpDirection = Vector3.right;
                 Physics2D.gravity = new Vector2(grav * -1, 0);
                 break;
-            case 'r': // Right
-
+            case 'l': // Gravity Left (player head facing left)
+                playerHeadUpDirection = Vector3.left; 
                 Physics2D.gravity = new Vector2(grav, 0);
                 break;
         }
+
+        player.transform.up = playerHeadUpDirection;
     }
 }

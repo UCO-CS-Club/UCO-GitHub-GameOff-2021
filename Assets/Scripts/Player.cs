@@ -28,9 +28,7 @@ public class Player : MonoBehaviour
         if (GameTime.isPaused)
             return;
 
-        horizontalInput = Input.GetAxis("Horizontal");
-
-        body.velocity = new Vector2(horizontalInput * speed, body.velocity.y);
+        Move();
 
         if (Input.GetKey(Constants.JUMP_KEY) && isGrounded())
             Jump();
@@ -38,12 +36,50 @@ public class Player : MonoBehaviour
 
     private void Jump()
     {
-        body.velocity = new Vector2(body.velocity.x, jumpPower);
+        Vector3 phd = GravityGlitchLevelController.playerHeadUpDirection;
+
+        if (phd == Vector3.up)
+            body.velocity = new Vector2(body.velocity.x, jumpPower);
+        else if (phd == Vector3.down)
+            body.velocity = new Vector2(body.velocity.x, jumpPower * -1);
+        else if (phd == Vector3.right)
+            body.velocity = new Vector2(jumpPower, body.velocity.y);
+        else if (phd == Vector3.left)
+            body.velocity = new Vector2(jumpPower * -1, body.velocity.y);
+    }
+
+    private void Move()
+    {
+        Vector3 phd = GravityGlitchLevelController.playerHeadUpDirection;
+        horizontalInput = Input.GetAxis("Horizontal");
+
+        if (phd == Vector3.up) // player head pointing up
+            body.velocity = new Vector2(horizontalInput * speed, body.velocity.y);
+        else if (phd == Vector3.down) // player head pointing down
+            body.velocity = new Vector2(horizontalInput * speed * -1, body.velocity.y);
+        else if (phd == Vector3.right) // player head pointing right
+            body.velocity = new Vector2(body.velocity.x, horizontalInput * speed * -1);
+        else if (phd == Vector3.left) // player head pointing left
+            body.velocity = new Vector2(body.velocity.x, horizontalInput * speed);
     }
 
     private bool isGrounded()
     {
-        RaycastHit2D raycastHit = Physics2D.BoxCast(boxCollider.bounds.center, boxCollider.bounds.size, 0, Vector2.down, 0.1f, groundLayer);
+        Vector3 phd = GravityGlitchLevelController.playerHeadUpDirection;
+        horizontalInput = Input.GetAxis("Horizontal");
+
+        //if (phd == Vector3.up) 
+        //    phd = Vector3.down;
+        //else if (phd == Vector3.down) 
+        //    phd = Vector3.up;
+        //else if (phd == Vector3.right) 
+        //    phd = Vector3.left;
+        //else if (phd == Vector3.left)
+        //    phd = Vector3.right;
+
+        phd *= -1;
+
+        RaycastHit2D raycastHit = Physics2D.BoxCast(boxCollider.bounds.center, boxCollider.bounds.size, 0, phd, 0.1f, groundLayer);
         return raycastHit.collider != null;
     }
 }
