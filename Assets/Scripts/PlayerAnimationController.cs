@@ -10,11 +10,13 @@ public class PlayerAnimationController : MonoBehaviour
     private DialogBoxSystem dialogBoxSystem;
 
     // inverted shader
-    [Range(1, 5)]
-    public int animationState = 1;
+    [Range(1, 6)]
+    public int buggyAnimationLevel = 1;
+    //private Renderer[] glitchEffectRenderer = new Renderer[0];
     [SerializeField]
-    private Renderer[] glitchEffectRenderer = new Renderer[0];
     Material invertedMaterial;
+
+    float cooldownCounter = 0;
 
     // Shader parameters in order in string:
     //      Noise Tiling X
@@ -32,11 +34,12 @@ public class PlayerAnimationController : MonoBehaviour
     //      Noise Grow Amount
     private string[] buggyShaderParameters =
     {
-        "0.12 0.12 0 0 255 254 0.1 0.1 0 0 1 20 1", // Level 1
-        "0.12 0.12 0 0 255 232 0.1 0.1 0 0 1 20 1", // Level 2
-        "0.12 0.12 0 0 255 213 0.1 0.1 0 0 1 20 1", // Level 3
-        "0.12 0.12 0 0 255 189 0.1 0.1 0 0 1 20 1", // Level 4
-        "0.12 0.12 0 0 255 170 0.1 0.1 0 0 1 20 1", // Level 5
+        "0.12 0.12 0 0 255 1000 0.1 0.1 0 0 1 20 1", // Level 1
+        "0.12 0.12 0 0 255 254 0.1 0.1 0 0 1 20 1", // Level 2
+        "0.12 0.12 0 0 255 232 0.1 0.1 0 0 1 20 1", // Level 3
+        "0.12 0.12 0 0 255 213 0.1 0.1 0 0 1 20 1", // Level 4
+        "0.12 0.12 0 0 255 189 0.1 0.1 0 0 1 20 1", // Level 5
+        "0.12 0.12 0 0 255 170 0.1 0.1 0 0 1 20 1", // Level 6
     };
 
     // Animation controller
@@ -46,23 +49,41 @@ public class PlayerAnimationController : MonoBehaviour
     void Start()
     {
         dialogBoxSystem = GameObject.FindGameObjectWithTag("GameManager").GetComponent<DialogBoxSystem>();
-        invertedMaterial = GetComponent<Material>();
+    }
+
+    void Update()
+    {
+        cooldownCounter += Time.deltaTime;
+
+        if (Input.GetKeyUp(KeyCode.UpArrow) && cooldownCounter > 0.1)
+        {
+            GoNextBuggyState();
+            cooldownCounter = 0;
+        }
+        else if (Input.GetKeyUp(KeyCode.DownArrow) && cooldownCounter > 0.1)
+        {
+            GoPrevBuggyState();
+            cooldownCounter = 0;
+        }
     }
 
     public void DialogClosed()
     {
         dialogBoxSystem.getDialogBoxGameObject().SetActive(false);
-
     }
 
     public void UpdateBuggyState(int level)
     {
-        if (level < 0)
-            level = 0;
-        else if (level > 5)
-            level = 5;
+        if (level < 1)
+            level = 1;
+        else if (level > 6)
+            level = 6;
 
-        string[] temp = buggyShaderParameters[level - 1].Split(' ');
+        buggyAnimationLevel = level;
+        level -= 1;
+
+
+        string[] temp = buggyShaderParameters[level].Split(' ');
         float[] buggyParams = new float[temp.Length];
 
         for (int i = 0; i < buggyParams.Length; i++)
@@ -73,29 +94,28 @@ public class PlayerAnimationController : MonoBehaviour
         }
 
         // update material's texture tilling/offset
-        foreach (Renderer renderer in glitchEffectRenderer)
-        {
-            renderer.material.mainTextureScale = new Vector2(buggyParams[0], buggyParams[1]);
-            renderer.material.mainTextureOffset = new Vector2(buggyParams[2], buggyParams[3]);
-            renderer.material.SetFloat("_NoiseBrightness", buggyParams[4]);
-            renderer.material.SetFloat("_NoiseContrast", buggyParams[5]);
-            renderer.material.SetFloat("_NoiseMoveDirection.x", buggyParams[6]);
-            renderer.material.SetFloat("_NoiseMoveDirection.y", buggyParams[7]);
-            renderer.material.SetFloat("_NoiseMoveDirection.z", buggyParams[8]);
-            renderer.material.SetFloat("_NoiseMoveDirection.w", buggyParams[9]);
-            renderer.material.SetFloat("_NoiseGrowingEnabled", buggyParams[10]);
-            renderer.material.SetFloat("_NoiseGrowFrequency", buggyParams[11]);
-            renderer.material.SetFloat("_NoiseGrowAmount", buggyParams[12]);
-        }
+        invertedMaterial.mainTextureScale = new Vector2(buggyParams[0], buggyParams[1]);
+        invertedMaterial.mainTextureOffset = new Vector2(buggyParams[2], buggyParams[3]);
+        invertedMaterial.SetFloat("_NoiseBrightness", buggyParams[4]);
+        invertedMaterial.SetFloat("_NoiseContrast", buggyParams[5]);
+        invertedMaterial.SetFloat("_NoiseMoveDirection.x", buggyParams[6]);
+        invertedMaterial.SetFloat("_NoiseMoveDirection.y", buggyParams[7]);
+        invertedMaterial.SetFloat("_NoiseMoveDirection.z", buggyParams[8]);
+        invertedMaterial.SetFloat("_NoiseMoveDirection.w", buggyParams[9]);
+        invertedMaterial.SetFloat("_NoiseGrowingEnabled", buggyParams[10]);
+        invertedMaterial.SetFloat("_NoiseGrowFrequency", buggyParams[11]);
+        invertedMaterial.SetFloat("_NoiseGrowAmount", buggyParams[12]);
+
+        Debug.Log("Current Level: " + (level + 1));
     }
 
-    public void GoNextBuggyState(int level)
+    public void GoNextBuggyState()
     {
-        UpdateBuggyState(level + 1);
+        UpdateBuggyState(buggyAnimationLevel + 1);
     }
 
-    public void GoPrevBuggyState(int level)
+    public void GoPrevBuggyState()
     {
-        UpdateBuggyState(level - 1);
+        UpdateBuggyState(buggyAnimationLevel - 1);
     }
 }
