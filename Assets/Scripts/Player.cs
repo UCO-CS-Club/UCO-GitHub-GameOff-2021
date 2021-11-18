@@ -68,15 +68,6 @@ public class Player : MonoBehaviour
         Vector3 phd = GravityGlitchLevelController.playerHeadUpDirection;
         horizontalInput = Input.GetAxis("Horizontal");
 
-        //if (phd == Vector3.up) 
-        //    phd = Vector3.down;
-        //else if (phd == Vector3.down) 
-        //    phd = Vector3.up;
-        //else if (phd == Vector3.right) 
-        //    phd = Vector3.left;
-        //else if (phd == Vector3.left)
-        //    phd = Vector3.right;
-
         phd *= -1;
 
         RaycastHit2D raycastHit = Physics2D.BoxCast(boxCollider.bounds.center, boxCollider.bounds.size, 0, phd, 0.1f, groundLayer);
