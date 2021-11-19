@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering.PostProcessing;
 
 public class GravityGlitchLevelController : MonoBehaviour
 {
@@ -9,6 +10,13 @@ public class GravityGlitchLevelController : MonoBehaviour
     [SerializeField]
     [Range(0, 10)]
     private float gravityChangeFrequency = 3.0f;
+    [SerializeField]
+    private float glitchDuration = 0.5f;
+
+    [SerializeField]
+    private float gravChangeWarningDuration = 1f;
+
+    private float glitchDurationCounter = 0f;
     private float gravFreqCounter = 0.0f;
     private const float grav = 9.8f;
 
@@ -17,28 +25,43 @@ public class GravityGlitchLevelController : MonoBehaviour
     //  - r: right (player head facing right)
     //  - d: down (player head facing down)
     //  - l: left (player head facing left)
-    string currentSequence;
-    string lvl1Sequence = "dlur";
-    int gravSequenceCounter = 0;
+    private string currentSequence;
+    private string lvl1Sequence = "dlur";
+    private int gravSequenceCounter = 0;
 
-    GameObject player;
+    private GameObject player;
 
     static public Vector3 playerHeadUpDirection = Vector3.up;
+    private PostProcessVolume postProcessGlitch;
 
-
+    private PostProcess glitchPostFX;
+    float t = 0.0f; // lerp value for wavy glitch
 
     // Start is called before the first frame update
     void Start()
     {
+        GameObject cam = GameObject.FindGameObjectWithTag("MainCamera");
         currentSequence = lvl1Sequence;
         player = GameObject.FindGameObjectWithTag("Player");
+        postProcessGlitch = cam.GetComponent<PostProcessVolume>();
+        postProcessGlitch.enabled = false;
 
+        glitchPostFX = cam.GetComponent<PostProcess>();
     }
 
     // Update is called once per frame
     void Update()
     {
         gravFreqCounter += Time.deltaTime;
+        glitchDurationCounter += Time.deltaTime;
+
+        // gravity change warning started here
+        if (gravFreqCounter >= gravityChangeFrequency - gravChangeWarningDuration)
+        {
+            glitchPostFX.waveLength = Mathf.Lerp(0, 600, t);
+            glitchPostFX.waveHeight = Mathf.Lerp(0, 0.005f, t);
+            t += Time.deltaTime;
+        }
 
         // gravity change occurs here (every [gravityChangeFrequency] seconds)
         if (gravFreqCounter >= gravityChangeFrequency)
@@ -48,16 +71,21 @@ public class GravityGlitchLevelController : MonoBehaviour
             ChangeGravity(d);
             
             gravFreqCounter = 0;
+            t = 0;
             gravSequenceCounter = (gravSequenceCounter + 1) % currentSequence.Length;
         }
 
+        if (glitchDurationCounter <= glitchDuration)
+            postProcessGlitch.enabled = true;
+        else
+            postProcessGlitch.enabled = false;
+            
     }
 
     
     void ChangeGravity(char d)
     {
-        Debug.Log(d);
-
+        glitchDurationCounter = 0f;
         playerHeadUpDirection = Vector3.up;
         switch (d)
         {
