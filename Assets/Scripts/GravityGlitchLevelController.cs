@@ -34,8 +34,11 @@ public class GravityGlitchLevelController : MonoBehaviour
     static public Vector3 playerHeadUpDirection = Vector3.up;
     private PostProcessVolume postProcessGlitch;
 
+
+    // PostProcess component is attached to the MainCamera. We use this to adjust the variables on 
+    //  the material for the gravity change warning effect
     private PostProcess glitchPostFX;
-    float t = 0.0f; // lerp value for wavy glitch
+    float t = 0.0f; // time value for lerping between effect off to full effect
 
     // Start is called before the first frame update
     void Start()
@@ -44,7 +47,7 @@ public class GravityGlitchLevelController : MonoBehaviour
         currentSequence = lvl1Sequence;
         player = GameObject.FindGameObjectWithTag("Player");
         postProcessGlitch = cam.GetComponent<PostProcessVolume>();
-        postProcessGlitch.enabled = false;
+        postProcessGlitch.enabled = true;
 
         glitchPostFX = cam.GetComponent<PostProcess>();
     }
@@ -58,9 +61,10 @@ public class GravityGlitchLevelController : MonoBehaviour
         // gravity change warning started here
         if (gravFreqCounter >= gravityChangeFrequency - gravChangeWarningDuration)
         {
-            glitchPostFX.waveLength = Mathf.Lerp(0, 600, t);
-            glitchPostFX.waveHeight = Mathf.Lerp(0, 0.005f, t);
+            glitchPostFX.waveLength = Mathf.Lerp(5000, 700, t);
+            postProcessGlitch.weight = Mathf.Lerp(0, 0.5f, t);
             t += Time.deltaTime;
+            Debug.Log(glitchPostFX.waveLength);
         }
 
         // gravity change occurs here (every [gravityChangeFrequency] seconds)
@@ -75,16 +79,13 @@ public class GravityGlitchLevelController : MonoBehaviour
             gravSequenceCounter = (gravSequenceCounter + 1) % currentSequence.Length;
         }
 
-        if (glitchDurationCounter <= glitchDuration)
-            postProcessGlitch.enabled = true;
-        else
-            postProcessGlitch.enabled = false;
-            
     }
 
     
     void ChangeGravity(char d)
     {
+        postProcessGlitch.weight = 1f;
+
         glitchDurationCounter = 0f;
         playerHeadUpDirection = Vector3.up;
         switch (d)
@@ -108,5 +109,9 @@ public class GravityGlitchLevelController : MonoBehaviour
         }
 
         player.transform.up = playerHeadUpDirection;
+
+        // Turn off grav glitch warning
+        glitchPostFX.waveLength = 5000;
+        postProcessGlitch.weight = 0f;
     }
 }
