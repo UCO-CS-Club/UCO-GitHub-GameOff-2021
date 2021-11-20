@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8721068606964177402}
   - component: {fileID: 8721068606964177403}
-  - component: {fileID: 4624568035893132934}
+  - component: {fileID: 445777617984576627}
   m_Layer: 0
   m_Name: DialogBoxTrigger
   m_TagString: Untagged
@@ -58,7 +58,7 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
---- !u!114 &4624568035893132934
+--- !u!114 &445777617984576627
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -67,7 +67,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 8721068606964177400}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 09cd0ddc5ffa525488e420c044029103, type: 3}
+  m_Script: {fileID: 11500000, guid: b0a4c5f9bce0dfd43b74daf0d845fc4f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prefab: {fileID: 0}
+  dialogBoxText: The quick brown fox jumped over the lazy dog.

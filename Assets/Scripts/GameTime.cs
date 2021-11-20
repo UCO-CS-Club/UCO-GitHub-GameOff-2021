@@ -7,12 +7,12 @@ public static class GameTime
     public static bool isPaused = false;
     public static float deltaTime { get { return isPaused ? 0 : Time.deltaTime; } }
 
-    public static void Pause()
+    public static void Play()
     {
         isPaused = false;
     }
 
-    public static void Resume()
+    public static void Pause()
     {
         isPaused = true;
     }
