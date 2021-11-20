@@ -5,18 +5,27 @@ using UnityEngine.Rendering.PostProcessing;
 
 public class GravityGlitchLevelController : MonoBehaviour
 {
+    /*
+     * The glitch effect is achieved using 2 methods:
+     * 
+     * 1. The Post-Process Volume that is attached to the MainCamera
+     * 2. The PostProcess script that feeds the camera image into the 
+     */
 
-    // controls the glitch frequency
+    [Header("Duration of the glitch warning effect (Seconds)")]
+    [SerializeField]
+    private float glitchWarningDuration = 1f;
+
+    [Header("The duration of the full strength glitch effect (Seconds)")]
+    [SerializeField]
+    private float glitchFullEffectDuration = 0.5f;
+
     [SerializeField]
     [Range(0, 10)]
+    [Header("How often the gravity change should occur (Seconds). This val >= glitchWarningDuration + glitchFullEffectDuration")]
     private float gravityChangeFrequency = 3.0f;
-    [SerializeField]
-    private float glitchDuration = 0.5f;
 
-    [SerializeField]
-    private float gravChangeWarningDuration = 1f;
 
-    private float glitchDurationCounter = 0f;
     private float gravFreqCounter = 0.0f;
     private const float grav = 9.8f;
 
@@ -25,15 +34,21 @@ public class GravityGlitchLevelController : MonoBehaviour
     //  - r: right (player head facing right)
     //  - d: down (player head facing down)
     //  - l: left (player head facing left)
+    private string[] sequences =
+    {
+        "dlrudlrudldruldrul",
+        "dlrudlrudldruldrul",
+        "dlrudlrudldruldrul"
+    };
     private string currentSequence;
-    private string lvl1Sequence = "dlur";
     private int gravSequenceCounter = 0;
+    const string gravityDirections = "dlur"; // reference to each direction to spin character randomly
 
-    private GameObject player;
 
+    // For controller player and glitch effect(s)
     static public Vector3 playerHeadUpDirection = Vector3.up;
+    private GameObject player;
     private PostProcessVolume postProcessGlitch;
-
 
     // PostProcess component is attached to the MainCamera. We use this to adjust the variables on 
     //  the material for the gravity change warning effect
@@ -44,11 +59,9 @@ public class GravityGlitchLevelController : MonoBehaviour
     void Start()
     {
         GameObject cam = GameObject.FindGameObjectWithTag("MainCamera");
-        currentSequence = lvl1Sequence;
+        currentSequence = sequences[0];
         player = GameObject.FindGameObjectWithTag("Player");
         postProcessGlitch = cam.GetComponent<PostProcessVolume>();
-        postProcessGlitch.enabled = true;
-
         glitchPostFX = cam.GetComponent<PostProcess>();
     }
 
@@ -56,62 +69,75 @@ public class GravityGlitchLevelController : MonoBehaviour
     void Update()
     {
         gravFreqCounter += Time.deltaTime;
-        glitchDurationCounter += Time.deltaTime;
 
-        // gravity change warning started here
-        if (gravFreqCounter >= gravityChangeFrequency - gravChangeWarningDuration)
+        // gravity change WARNING effect starts [glitchWarningDuration] seconds before the gravity change
+        if (gravFreqCounter >= gravityChangeFrequency - glitchFullEffectDuration - glitchWarningDuration)
         {
-            glitchPostFX.waveLength = Mathf.Lerp(5000, 700, t);
-            postProcessGlitch.weight = Mathf.Lerp(0, 0.5f, t);
+            glitchPostFX.waveLength = Mathf.Lerp(5000, 700, t); // increase the shader wavy effect
+            postProcessGlitch.weight = Mathf.Lerp(0, 0.5f, t); // increase post process graininess to half effect
             t += Time.deltaTime;
-            Debug.Log(glitchPostFX.waveLength);
         }
 
-        // gravity change occurs here (every [gravityChangeFrequency] seconds)
+        // gravity change FULL effect triggers [glitchFullEffectDuration] seconds before the gravity change
+        if (gravFreqCounter >= gravityChangeFrequency - glitchFullEffectDuration)
+        {
+            postProcessGlitch.weight = 1f; // set post process graininess to full effect
+            postProcessGlitch.GetComponent<ColorGrading>().hueShift.value = 120f;
+
+            char d = gravityDirections[Random.Range(0, 4)]; // generate random direction from reference of directions (gravityDirections)
+            ChangeGravity(d); // change gravity to the random selection
+        }
+
+        // Actual (next in sequence) gravity change occur and glitch effects are turned off
         if (gravFreqCounter >= gravityChangeFrequency)
         {
-            char d = currentSequence[gravSequenceCounter];
+            char d = currentSequence[gravSequenceCounter]; // get next direction in sequence
+            ChangeGravity(d); // change gravity
 
-            ChangeGravity(d);
-            
+            gravSequenceCounter = (gravSequenceCounter + 1) % currentSequence.Length; // increment direction for next gravity change
+
+            // turn off glitch effects
+            postProcessGlitch.weight = 0f;
+            glitchPostFX.waveLength = 5000;
+            postProcessGlitch.GetComponent<ColorGrading>().hueShift.value = 0f;
+
+
+            // reset counter for next gravity change
             gravFreqCounter = 0;
             t = 0;
-            gravSequenceCounter = (gravSequenceCounter + 1) % currentSequence.Length;
         }
-
     }
 
-    
+    // Changes gravity direction.
+    // Parameter Notes: "char d" (player direction) is in regard to the direction their head is facing
+    // (e.g. In TheRealWorld(TM), when standing your direction is 'u' )
     void ChangeGravity(char d)
     {
-        postProcessGlitch.weight = 1f;
-
-        glitchDurationCounter = 0f;
-        playerHeadUpDirection = Vector3.up;
         switch (d)
         {
-            case 'd': // Gravity Down (player head facing down)
+            case 'd': // Upside down (player head facing down) 
                 playerHeadUpDirection = Vector3.down;
                 Physics2D.gravity = new Vector2(0, grav);
                 break;
-            case 'u': // Gravity Up (player head facing up)
+            case 'u': // Rightside up (player head facing up)
                 playerHeadUpDirection = Vector3.up;
                 Physics2D.gravity = new Vector2(0, grav * -1);
                 break;
-            case 'r': // Gravity Right (player head facing right)
+            case 'r': // (player head facing right)
                 playerHeadUpDirection = Vector3.right;
                 Physics2D.gravity = new Vector2(grav * -1, 0);
                 break;
-            case 'l': // Gravity Left (player head facing left)
+            case 'l': // (player head facing left)
                 playerHeadUpDirection = Vector3.left; 
                 Physics2D.gravity = new Vector2(grav, 0);
                 break;
+            default:
+                playerHeadUpDirection = Vector3.up; // in case switch statement fails
+                break;
         }
 
+        // set the player's up direction 
         player.transform.up = playerHeadUpDirection;
 
-        // Turn off grav glitch warning
-        glitchPostFX.waveLength = 5000;
-        postProcessGlitch.weight = 0f;
     }
 }

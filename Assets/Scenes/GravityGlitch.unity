@@ -248,9 +248,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b5b166e08fcde814eb8c4379567a4486, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gravityChangeFrequency: 4
-  glitchDuration: 0.5
-  gravChangeWarningDuration: 2
+  glitchWarningDuration: 1
+  glitchFullEffectDuration: 0.5
+  gravityChangeFrequency: 3
 --- !u!1001 &723619263
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -665,7 +665,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sharedProfile: {fileID: 11400000, guid: ae38cfbaeb240234da049332af96f20a, type: 2}
-  isGlobal: 0
+  isGlobal: 1
   blendDistance: 0
   weight: 0
   priority: 0
