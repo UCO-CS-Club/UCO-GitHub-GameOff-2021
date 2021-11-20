@@ -82,7 +82,7 @@ public class GravityGlitchLevelController : MonoBehaviour
         if (gravFreqCounter >= gravityChangeFrequency - glitchFullEffectDuration)
         {
             postProcessGlitch.weight = 1f; // set post process graininess to full effect
-            postProcessGlitch.GetComponent<ColorGrading>().hueShift.value = 120f;
+            //postProcessGlitch.GetComponent<ColorGrading>().hueShift.Over
 
             char d = gravityDirections[Random.Range(0, 4)]; // generate random direction from reference of directions (gravityDirections)
             ChangeGravity(d); // change gravity to the random selection
@@ -99,7 +99,7 @@ public class GravityGlitchLevelController : MonoBehaviour
             // turn off glitch effects
             postProcessGlitch.weight = 0f;
             glitchPostFX.waveLength = 5000;
-            postProcessGlitch.GetComponent<ColorGrading>().hueShift.value = 0f;
+            //postProcessGlitch.GetComponent<ColorGrading>().hueShift.value = 0f;
 
 
             // reset counter for next gravity change
