@@ -73,14 +73,16 @@ public class GravityGlitchLevelController : MonoBehaviour
         // gravity change WARNING effect starts [glitchWarningDuration] seconds before the gravity change
         if (gravFreqCounter >= gravityChangeFrequency - glitchFullEffectDuration - glitchWarningDuration)
         {
-            glitchPostFX.waveLength = Mathf.Lerp(5000, 700, t); // increase the shader wavy effect
-            postProcessGlitch.weight = Mathf.Lerp(0, 0.5f, t); // increase post process graininess to half effect
+            Debug.Log("Starting Warning: " + gravFreqCounter);
+            glitchPostFX.waveLength = Mathf.Lerp(99999, 700, t * 5); // increase the shader wavy effect
+            postProcessGlitch.weight = Mathf.Lerp(0, 0.5f, t * 5); // increase post process graininess to half effect
             t += Time.deltaTime;
         }
 
         // gravity change FULL effect triggers [glitchFullEffectDuration] seconds before the gravity change
         if (gravFreqCounter >= gravityChangeFrequency - glitchFullEffectDuration)
         {
+            Debug.Log("Starting Full Effect: " + gravFreqCounter);
             postProcessGlitch.weight = 1f; // set post process graininess to full effect
             //postProcessGlitch.GetComponent<ColorGrading>().hueShift.Over
 
@@ -91,6 +93,7 @@ public class GravityGlitchLevelController : MonoBehaviour
         // Actual (next in sequence) gravity change occur and glitch effects are turned off
         if (gravFreqCounter >= gravityChangeFrequency)
         {
+            Debug.Log("Grav Change / Reset: " + gravFreqCounter);
             char d = currentSequence[gravSequenceCounter]; // get next direction in sequence
             ChangeGravity(d); // change gravity
 
@@ -98,7 +101,7 @@ public class GravityGlitchLevelController : MonoBehaviour
 
             // turn off glitch effects
             postProcessGlitch.weight = 0f;
-            glitchPostFX.waveLength = 5000;
+            glitchPostFX.waveLength = 99999;
             //postProcessGlitch.GetComponent<ColorGrading>().hueShift.value = 0f;
 
 

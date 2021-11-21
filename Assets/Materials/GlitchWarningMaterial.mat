@@ -86,7 +86,7 @@ Material:
     - _UVSec: 0
     - _ZWrite: 1
     - _speed: 40
-    - _waveLength: 5000
+    - _waveLength: 99999
     - _waveNumber: 3
     - _waverHeight: 3
     m_Colors:
