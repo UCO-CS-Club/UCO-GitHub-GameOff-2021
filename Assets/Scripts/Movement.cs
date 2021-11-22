@@ -9,9 +9,10 @@ public class Movement : MonoBehaviour
     public const string LEFT = "Left";
     public const string RIGHT = "Right";
     public const string JUMP = "Space";
-    [SerializeField] public int speed;
+    [SerializeField] public float speed;
     public float jumpVelocity;
     string buttonPressed;
+    private float animationSpeed = 0.0f;
 
     public float dashSpeed;
     private float dashTime;
@@ -21,25 +22,32 @@ public class Movement : MonoBehaviour
     bool isDashing;
     bool startCooldown = false;
     private BoxCollider2D boxCollider;
+    public Animator anim;
 
     // Start is called before the first frame update
     void Start()
     {
+        anim = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
-
         boxCollider = GetComponent<BoxCollider2D>();
     }
     void Update()
     {
+        
+        anim.SetFloat("Speed", Mathf.Abs(animationSpeed));
         if (Input.GetKey(KeyCode.A))
         {
             buttonPressed = LEFT;
             direction = 2;
+            
+            
         }
         else if (Input.GetKey(KeyCode.D))
         {
+            
             buttonPressed = RIGHT;
             direction = 1;
+            
         }
         else
         {
@@ -66,20 +74,32 @@ public class Movement : MonoBehaviour
             isDashing = true;
             Dash();
         }
+        if (!Input.anyKey)
+        {
+            animationSpeed = 0.0f;
+        }
     }
 
     private void FixedUpdate()
     {
+        Vector3 charecterScale = transform.localScale;
         if (!isDashing)
         {
+
             if (buttonPressed == RIGHT)
             {
+                charecterScale.x = 10;
+                animationSpeed = 1.0f;
                 rb.velocity = new Vector2(speed, rb.velocity.y);
             }
             else if (buttonPressed == LEFT)
             {
+                charecterScale.x = -10;
+                animationSpeed =+ 1.0f;
                 rb.velocity = new Vector2(-speed, rb.velocity.y);
+               
             }
+            transform.localScale = charecterScale;
         }
         if (buttonPressed == JUMP)
         {
@@ -94,12 +114,12 @@ public class Movement : MonoBehaviour
 
         RaycastHit2D hits = Physics2D.BoxCast(boxCollider.bounds.center, boxCollider.bounds.size, 0, Vector2.down, 0.1f,groundLayer);//Center Size and 0
         return hits.collider != null;
-        // Maybe find a way to togle is grounded to get the sling shot effect
-        
+
     }
     void Dash()
     {
-        Instantiate(dashEffect, transform.position, Quaternion.identity);
+        //Instantiate(dashEffect, transform.position, Quaternion.identity);
+        
         dashTime = startDashTime;
         if (direction == 1)
         {
@@ -111,6 +131,7 @@ public class Movement : MonoBehaviour
         }
         startCooldown = true;
 
+        
     }
 
 }

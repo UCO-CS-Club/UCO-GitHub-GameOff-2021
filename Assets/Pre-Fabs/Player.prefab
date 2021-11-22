@@ -144,8 +144,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 03d9643719b5f8140abe6177ee6dd179, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 0
   speed: 6
   jumpVelocity: 10
   dashSpeed: 15
   startDashTime: 0.1
-  dashEffect: {fileID: 0}
+  dashEffect: {fileID: 4585629905312140807, guid: 78d3524f0b0f5b24099e231757ba87bd, type: 3}
