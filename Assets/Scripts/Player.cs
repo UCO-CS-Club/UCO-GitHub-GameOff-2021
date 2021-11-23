@@ -19,14 +19,20 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (GameTime.isPaused)
-            return;
+        /*if (GameTime.isPaused)
+            return;*/
 
         horizontalInput = Input.GetAxis("Horizontal");
 
         if (horizontalInput != 0)
         {
             body.velocity = new Vector2(horizontalInput * speed, 0);
+        }
+
+        // no moving if dialog is open!
+        if(DialogBoxSystem.isPopUpActive)
+        {
+            body.velocity = new Vector2(0, 0);
         }
     }
 }
