@@ -17,6 +17,9 @@ TextureImporter:
   - first:
       213: 7235640377756637571
     second: 0x72_16x16RobotTileset.v2_13
+  - first:
+      213: 5180965613681759955
+    second: 0x72_16x16RobotTileset.v2 2_0
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -3713,6 +3716,27 @@ TextureImporter:
       bones: []
       spriteID: 38958a666982a6460800000000000000
       internalID: 7235640377756637571
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: 0x72_16x16RobotTileset.v2 2_0
+      rect:
+        serializedVersion: 2
+        x: 277
+        y: 269
+        width: 4
+        height: 57
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3d6d30596cc76e740800000000000000
+      internalID: 5180965613681759955
       vertices: []
       indices: 
       edges: []
