@@ -124,8 +124,6 @@ public class BugBossBehavior : MonoBehaviour
 
         LayerMask collisionLayer = rayUpFromOffsetPosition.collider ? rayUpFromOffsetPosition.collider.gameObject.layer : -1;
 
-        Debug.Log(floorAlreadyDetected);
-
         float rVal = Random.value;
         if (collisionLayer.value == floorLayer.value && isGrounded)
         {
