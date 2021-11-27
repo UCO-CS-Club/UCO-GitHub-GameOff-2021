@@ -97,6 +97,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d4afeb36ff1740645a4f27ba60cde02f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  explosionBlock: {fileID: 8906805979149338928, guid: 977951c220e99cc4c96d6c39ff593e19, type: 3}
   movementSpeed: 12
   distanceBeforeJumpingAtPlayer: 6
   jumpYForce: 5

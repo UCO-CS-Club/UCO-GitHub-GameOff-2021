@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class BugBehavior : MonoBehaviour
 {
+    [SerializeField] private GameObject explosionBlock;
     [SerializeField] private float movementSpeed = 1f;
     [Tooltip("When the bug changes direction, this value (n*10%) will be used to determine a chance of picking the players direction")]
     [SerializeField] private float distanceBeforeJumpingAtPlayer = 4;
@@ -43,6 +44,7 @@ public class BugBehavior : MonoBehaviour
     private const float MAX_RAY_DIST = 0.00001f;
     private const float OPEN_CORNER_MAX_RAY_DIST = 0.1f;
     private const float RAY_ORIGIN_OFFSET = 0.1f;
+    private const int NUM_OF_EXPLOSION_SPRITES = 15;
 
     private float timeOfBirth;
 
@@ -327,7 +329,11 @@ public class BugBehavior : MonoBehaviour
 
     private void BugDeath()
     {
-        // some cool explosion routine here would be great
+        for (int i = 0; i < NUM_OF_EXPLOSION_SPRITES; i++)
+        {
+            Instantiate(explosionBlock, new Vector3(transform.position.x, transform.position.y, 0), new Quaternion());
+        }
+
         Destroy(this.gameObject);
     }
 
