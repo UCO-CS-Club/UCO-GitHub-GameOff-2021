@@ -5,7 +5,12 @@ TagManager:
   serializedVersion: 2
   tags:
   - GameManager
+<<<<<<< HEAD
   - InvertColorBlock
+=======
+  - Bug
+  - Bug Boss
+>>>>>>> upstream/main
   layers:
   - Default
   - TransparentFX
@@ -14,9 +19,15 @@ TagManager:
   - Water
   - UI
   - Ground
+<<<<<<< HEAD
   - PostProcessing
   - 
   - 
+=======
+  - Wall
+  - BinaryBullet
+  - Player
+>>>>>>> upstream/main
   - 
   - 
   - 
