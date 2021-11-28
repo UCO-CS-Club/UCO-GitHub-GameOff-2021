@@ -6,7 +6,7 @@ public class BugBossBehavior : MonoBehaviour
 {
     [SerializeField] private GameObject bug;
     [Tooltip("The Bug Boss releases this many bugs every Time Between Bugs")]
-    [Range(1, 100)]
+    [Range(0, 100)]
     [SerializeField] private int numberOfBugsReleased = 5;
     [Tooltip("The time elapsed between the last bug release and the next bug release")]
     [Range(0.1f, 30)]
@@ -15,8 +15,11 @@ public class BugBossBehavior : MonoBehaviour
     [SerializeField] private float movementSpeed = 4;
     [SerializeField] private float jumpHeight = 160.0f;
     [SerializeField] private float gravity = 9.8f;
+    [Tooltip("This value serves as a timer to decrement the other timer so that bugs start appearing sooner as the game progresses")]
+    [SerializeField] private float decrementTimeBetweenBugs = 10;
 
     private float timeSinceLastBugRelease;
+    private float timeSinceLastDecrement;
     private Rigidbody2D rb2D;
     private LayerMask floorLayer;
 
@@ -29,6 +32,7 @@ public class BugBossBehavior : MonoBehaviour
     private const float SIDEWAYS_PLAYER_OFFSET = 5.1f;
     private const float CHANCE_OF_JUMPING = 0.43f;
 
+    private const float TIMER_DECREMENT = 0.1f;
     // horizontal direction of the boss
     private float x;
 
@@ -44,6 +48,7 @@ public class BugBossBehavior : MonoBehaviour
         floorLayer = LayerMask.NameToLayer("Ground");
 
         floorAlreadyDetected = false;
+        timeSinceLastDecrement = Time.time;
     }
 
     // Update is called once per frame
@@ -51,7 +56,7 @@ public class BugBossBehavior : MonoBehaviour
     {
         float currentTime = Time.time;
 
-        if (Mathf.Abs(currentTime - timeSinceLastBugRelease) >= timeBetweenBugs)
+        if (currentTime - timeSinceLastBugRelease >= timeBetweenBugs)
         {
             timeSinceLastBugRelease = currentTime;
             for (int i = 0; i < numberOfBugsReleased; i++)
@@ -76,6 +81,12 @@ public class BugBossBehavior : MonoBehaviour
 
                 Instantiate(bug, new Vector3(posX, posY, 0), new Quaternion());
             }
+        }
+
+        if (timeBetweenBugs >= 1 && currentTime - timeSinceLastDecrement >= decrementTimeBetweenBugs)
+        {
+            timeSinceLastDecrement = currentTime;
+            timeBetweenBugs -= TIMER_DECREMENT;
         }
     }
 
@@ -146,6 +157,12 @@ public class BugBossBehavior : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
+        if (collision.gameObject.layer.Equals(LayerMask.NameToLayer("BinaryBullet")))
+        {
+            Physics2D.IgnoreCollision(transform.GetComponent<Collider2D>(), collision.collider);
+            return;
+        }
+
         if (collision.gameObject.CompareTag("Bug"))
         {
             Physics2D.IgnoreCollision(transform.GetComponent<Collider2D>(), collision.collider);
@@ -172,5 +189,10 @@ public class BugBossBehavior : MonoBehaviour
         {
             isGrounded = false;
         }
+    }
+
+    public void PlayerLost()
+    {
+        numberOfBugsReleased = 0;
     }
 }
