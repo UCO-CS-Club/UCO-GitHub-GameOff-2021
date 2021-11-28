@@ -97,6 +97,12 @@ public class BugBehavior : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if (!player)
+        {
+            BugDeath();
+            return;
+        }
+
         fixedFramesSinceLastOpenCornerMovementUpdate--;
 
         // Cast a ray at the player, if hit and distance is less than distance before jumping at player, jump at player
@@ -345,6 +351,12 @@ public class BugBehavior : MonoBehaviour
             return;
         }
 
+        if (collision.gameObject.layer.Equals(LayerMask.NameToLayer("BinaryBullet")))
+        {
+            BugDeath();
+            return;
+        }
+
         LayerMask collisionLayer = collision.gameObject.layer;
 
         if (collisionLayer == floorLayer || collisionLayer == wallLayer)
@@ -352,7 +364,7 @@ public class BugBehavior : MonoBehaviour
             isGrounded = true;
         }
 
-        if (collision.gameObject.Equals(player))
+        else if (collision.gameObject.Equals(player))
         {
             BugDeath();
         }

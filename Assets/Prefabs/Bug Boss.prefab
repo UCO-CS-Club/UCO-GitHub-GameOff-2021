@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 1241281101015264519}
   m_Layer: 0
   m_Name: Bug Boss
-  m_TagString: Untagged
+  m_TagString: Bug Boss
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -127,7 +127,7 @@ Rigidbody2D:
   m_LinearDrag: 0
   m_AngularDrag: 0.05
   m_GravityScale: 9
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: 174c1a7f7e7a7d847a8a0b8cb34efd12, type: 2}
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 1
