@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Movement : MonoBehaviour
 {
-    [SerializeField]private LayerMask groundLayer;
+    [SerializeField] private LayerMask groundLayer;
     private Rigidbody2D rb;
     public const string LEFT = "Left";
     public const string RIGHT = "Right";
@@ -17,7 +17,7 @@ public class Movement : MonoBehaviour
     public float dashSpeed;
     private float dashTime;
     public float startDashTime;
-    private int direction = 1; // default value
+    public static int direction = 1; // default value
     public GameObject dashEffect;
     bool isDashing;
     bool startCooldown = false;
@@ -27,33 +27,33 @@ public class Movement : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        anim = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
         boxCollider = GetComponent<BoxCollider2D>();
     }
     void Update()
     {
-        
+
         anim.SetFloat("Speed", Mathf.Abs(animationSpeed));
-        if (Input.GetKey(KeyCode.A))
+        /*if (Input.GetKey(KeyCode.A))*/
+        if (Input.GetAxisRaw("Horizontal") < 0)
         {
             buttonPressed = LEFT;
             direction = 2;
-            
-            
+
         }
-        else if (Input.GetKey(KeyCode.D))
+        /*else if (Input.GetKey(KeyCode.D))*/
+        else if (Input.GetAxisRaw("Horizontal") > 0)
         {
-            
+
             buttonPressed = RIGHT;
             direction = 1;
-            
+
         }
         else
         {
             buttonPressed = null;
         }
-        if (Input.GetKey(KeyCode.Space)&& isGrounded())
+        if (Input.GetKey(KeyCode.Space) && isGrounded())
         {
             buttonPressed = JUMP;
         }
@@ -67,6 +67,7 @@ public class Movement : MonoBehaviour
         {
             isDashing = false;
             startCooldown = false;
+            if (isGrounded()) rb.velocity = new Vector2(0, rb.velocity.y);
         }
 
         if (Input.GetKeyDown(KeyCode.E) && !isDashing)
@@ -95,9 +96,9 @@ public class Movement : MonoBehaviour
             else if (buttonPressed == LEFT)
             {
                 charecterScale.x = -10;
-                animationSpeed =+ 1.0f;
+                animationSpeed = +1.0f;
                 rb.velocity = new Vector2(-speed, rb.velocity.y);
-               
+
             }
             transform.localScale = charecterScale;
         }
@@ -112,14 +113,14 @@ public class Movement : MonoBehaviour
     private bool isGrounded()
     {
 
-        RaycastHit2D hits = Physics2D.BoxCast(boxCollider.bounds.center, boxCollider.bounds.size, 0, Vector2.down, 0.1f,groundLayer);//Center Size and 0
+        RaycastHit2D hits = Physics2D.BoxCast(boxCollider.bounds.center, boxCollider.bounds.size, 0, Vector2.down, 0.1f, groundLayer);//Center Size and 0
         return hits.collider != null;
 
     }
     void Dash()
     {
         //Instantiate(dashEffect, transform.position, Quaternion.identity);
-        
+
         dashTime = startDashTime;
         if (direction == 1)
         {
@@ -131,7 +132,7 @@ public class Movement : MonoBehaviour
         }
         startCooldown = true;
 
-        
+
     }
 
 }
