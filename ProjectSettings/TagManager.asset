@@ -3,7 +3,8 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - WORKDammit!
   layers:
   - Default
   - TransparentFX
@@ -12,9 +13,9 @@ TagManager:
   - Water
   - UI
   - 
-  - 
-  - 
-  - 
+  - Walls
+  - Ground
+  - Lighing
   - 
   - 
   - 
@@ -40,4 +41,16 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: BackGround
+    uniqueID: 1283627105
+    locked: 0
+  - name: player
+    uniqueID: 3127262711
+    locked: 0
+  - name: Walls
+    uniqueID: 1356817585
+    locked: 0
+  - name: Floor
+    uniqueID: 3308460573
     locked: 0
