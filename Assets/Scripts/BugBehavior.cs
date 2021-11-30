@@ -16,6 +16,7 @@ public class BugBehavior : MonoBehaviour
 
     private Rigidbody2D rb2D;
     private GameObject player;
+    private GameObject boss;
     private static int direction = 1; // used to set the initial l/r movement on the bug
     private bool isGrounded;
 
@@ -48,12 +49,17 @@ public class BugBehavior : MonoBehaviour
 
     private float timeOfBirth;
 
+    private bool attackingBoss;
+
+    private bool hasChangedDirectionAlready;
+
     // Start is called before the first frame update
     void Start()
     {
         timeOfBirth = Time.time; 
         rb2D = transform.GetComponent<Rigidbody2D>();
         player = GameObject.Find("/PlayerFolder/Player");
+        boss = GameObject.Find("/BossFolder/Bug Boss");
 
         if (direction == 1)
         {
@@ -83,6 +89,11 @@ public class BugBehavior : MonoBehaviour
         bOffset = -(transform.localScale.y / 2.0f) - 0.001f;
 
         fixedFramesSinceLastOpenCornerMovementUpdate = 0;
+
+        attackingBoss = false;
+
+        GetComponent<SpriteRenderer>().color = Color.red;
+        hasChangedDirectionAlready = false;
     }
 
     // Update is called once per frame
@@ -92,6 +103,13 @@ public class BugBehavior : MonoBehaviour
         if (timeSinceBirth - timeOfBirth >= lifespanOfBug)
         {
             BugDeath();
+        }
+
+        if (!hasChangedDirectionAlready && attackingBoss)
+        {
+            hasChangedDirectionAlready = true;
+            GetComponent<SpriteRenderer>().color = Color.green;
+            ChangeDirection();
         }
     }
 
@@ -105,17 +123,37 @@ public class BugBehavior : MonoBehaviour
 
         fixedFramesSinceLastOpenCornerMovementUpdate--;
 
-        // Cast a ray at the player, if hit and distance is less than distance before jumping at player, jump at player
-        Vector2 unitVectorInTheDirectionOfThePlayer = (player.transform.position - transform.position).normalized;
-        Vector2 originOfRayOutsideOfThisCollider = (Vector2)transform.position + unitVectorInTheDirectionOfThePlayer;
-        var rayToPlayer = Physics2D.Raycast(originOfRayOutsideOfThisCollider, unitVectorInTheDirectionOfThePlayer, rb2D.Distance(player.gameObject.GetComponent<Collider2D>()).distance);
-        var distanceToPlayer = rayToPlayer.collider.gameObject.name.Equals("Player") ? rayToPlayer.distance : 10000;
+
 
         // Player detected in range
-        if (isGrounded && distanceToPlayer < distanceBeforeJumpingAtPlayer)
+        if (!attackingBoss && isGrounded)
         {
-            JumpAtPlayer();
-            return;
+            // Cast a ray at the player, if hit and distance is less than distance before jumping at player, jump at player
+            Vector2 unitVectorInTheDirectionOfThePlayer = (player.transform.position - transform.position).normalized;
+            Vector2 originOfRayOutsideOfThisCollider = (Vector2)transform.position + unitVectorInTheDirectionOfThePlayer;
+            var rayToPlayer = Physics2D.Raycast(originOfRayOutsideOfThisCollider, unitVectorInTheDirectionOfThePlayer, rb2D.Distance(player.gameObject.GetComponent<Collider2D>()).distance);
+            var distanceToPlayer = rayToPlayer.collider.gameObject.name.Equals("Player") ? rayToPlayer.distance : 10000;
+
+            if (distanceToPlayer < distanceBeforeJumpingAtPlayer)
+            {
+                JumpAtPlayer();
+                return;
+            }
+        }
+
+        if (attackingBoss && isGrounded)
+        {
+            // Cast a ray at the boss, if hit and distance is less than distance before jumping at player, jump at boss
+            Vector2 unitVectorInTheDirectionOfTheBoss = (boss.transform.position - transform.position).normalized;
+            Vector2 originOfRayOutsideOfThisCollider = (Vector2)transform.position + unitVectorInTheDirectionOfTheBoss;
+            var rayToBoss = Physics2D.Raycast(originOfRayOutsideOfThisCollider, unitVectorInTheDirectionOfTheBoss, rb2D.Distance(boss.gameObject.GetComponent<Collider2D>()).distance);
+            var distanceToBoss = rayToBoss.collider.gameObject.name.Equals("Bug Boss") ? rayToBoss.distance : 10000;
+
+            if (distanceToBoss < distanceBeforeJumpingAtPlayer)
+            {
+                JumpAtPlayer();
+                return;
+            }
         }
 
         // Player not detected but bug has touched ground since jump
@@ -133,7 +171,16 @@ public class BugBehavior : MonoBehaviour
     {
         isGrounded = false;
         rb2D.gravityScale = 1;
-        Vector2 jump = player.transform.position - transform.position;
+        Vector2 jump;
+        if (!attackingBoss)
+        {
+            jump = player.transform.position - transform.position;
+        }
+        else
+        {
+            jump = boss.transform.position - transform.position;
+        }
+
         jump.Normalize();
 
         if (jump.y >= 0)
@@ -333,40 +380,83 @@ public class BugBehavior : MonoBehaviour
         }
     }
 
+    private void ChangeDirection()
+    {
+        if (x != 0)
+        {
+            x = -x;
+            return;
+        }
+        
+        y = -y;
+    }
+
     private void BugDeath()
     {
         for (int i = 0; i < NUM_OF_EXPLOSION_SPRITES; i++)
         {
             Instantiate(explosionBlock, new Vector3(transform.position.x, transform.position.y, 0), new Quaternion());
         }
-
         Destroy(this.gameObject);
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
+
+        LayerMask collisionLayer = collision.gameObject.layer;
+        if (collisionLayer == floorLayer || collisionLayer == wallLayer)
+        {
+            isGrounded = true;
+            return;
+        }
+
+        if (!attackingBoss && collision.gameObject.CompareTag("Bug Boss"))
+        {
+            Physics2D.IgnoreCollision(transform.GetComponent<Collider2D>(), collision.collider);
+            return;
+        }
+
+        else if (attackingBoss && collision.gameObject.CompareTag("Bug Boss"))
+        {
+            collision.gameObject.GetComponent<BugBossBehavior>().TakeDamage();
+            BugDeath();
+            return;
+        }
+
         if (collision.gameObject.CompareTag("Bug"))
         {
             Physics2D.IgnoreCollision(transform.GetComponent<Collider2D>(), collision.collider);
             return;
         }
 
-        if (collision.gameObject.layer.Equals(LayerMask.NameToLayer("BinaryBullet")))
+        if (!attackingBoss && collision.gameObject.layer.Equals(LayerMask.NameToLayer("BinaryBullet")))
+        {
+            GameObject.Find("/Bug Kill Tracker").GetComponent<BugKillTracker>().KillBug();
+            BugDeath();
+            return;
+        } 
+
+        else if (!attackingBoss && collision.gameObject.Equals(player))
         {
             BugDeath();
+        }
+
+        else if (attackingBoss && collision.gameObject.Equals(player))
+        {
+            Physics2D.IgnoreCollision(transform.GetComponent<Collider2D>(), collision.collider);
+
             return;
         }
 
-        LayerMask collisionLayer = collision.gameObject.layer;
+    }
 
-        if (collisionLayer == floorLayer || collisionLayer == wallLayer)
-        {
-            isGrounded = true;
-        }
+    public void SetAttackingBoss()
+    {
+        attackingBoss = true;
+    }
 
-        else if (collision.gameObject.Equals(player))
-        {
-            BugDeath();
-        }
+    public bool GetAttackingBoss()
+    {
+        return attackingBoss;
     }
 }

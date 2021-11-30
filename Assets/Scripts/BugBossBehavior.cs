@@ -36,6 +36,8 @@ public class BugBossBehavior : MonoBehaviour
     // horizontal direction of the boss
     private float x;
 
+    private int health;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -49,6 +51,8 @@ public class BugBossBehavior : MonoBehaviour
 
         floorAlreadyDetected = false;
         timeSinceLastDecrement = Time.time;
+
+        health = 100;
     }
 
     // Update is called once per frame
@@ -163,12 +167,6 @@ public class BugBossBehavior : MonoBehaviour
             return;
         }
 
-        if (collision.gameObject.CompareTag("Bug"))
-        {
-            Physics2D.IgnoreCollision(transform.GetComponent<Collider2D>(), collision.collider);
-            return;
-        }
-
         LayerMask collisionLayer = collision.gameObject.layer;
 
         if (collisionLayer == floorLayer)
@@ -195,4 +193,20 @@ public class BugBossBehavior : MonoBehaviour
     {
         numberOfBugsReleased = 0;
     }
+
+    public void TakeDamage()
+    {
+        health -= 5;
+        if (health <= 0)
+        {
+            BossDeath();
+        }
+        Debug.Log(health);
+    }
+
+    private void BossDeath()
+    {
+        Debug.Log("Boss Death");
+    }
+
 }
