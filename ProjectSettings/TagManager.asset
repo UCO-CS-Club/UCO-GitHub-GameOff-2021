@@ -4,13 +4,8 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - GameManager
-<<<<<<< HEAD
-  - InvertColorBlock
-=======
-  - Bug
   - Bug Boss
->>>>>>> upstream/main
+  - Bug
   layers:
   - Default
   - TransparentFX
@@ -19,15 +14,9 @@ TagManager:
   - Water
   - UI
   - Ground
-<<<<<<< HEAD
-  - PostProcessing
-  - 
-  - 
-=======
   - Wall
   - BinaryBullet
   - Player
->>>>>>> upstream/main
   - 
   - 
   - 
@@ -53,13 +42,4 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
-    locked: 0
-  - name: BuggyBackground
-    uniqueID: 958426581
-    locked: 0
-  - name: Player
-    uniqueID: 2907986499
-    locked: 0
-  - name: BuggyForeground
-    uniqueID: 2502038385
     locked: 0
