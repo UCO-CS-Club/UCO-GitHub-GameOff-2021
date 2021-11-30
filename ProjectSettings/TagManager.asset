@@ -4,7 +4,8 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - WORKDammit!
+  - Bug Boss
+  - Bug
   layers:
   - Default
   - TransparentFX
@@ -12,10 +13,11 @@ TagManager:
   - 
   - Water
   - UI
-  - 
-  - Walls
   - Ground
-  - Lighing
+  - Wall
+  - BinaryBullet
+  - Player
+
   - 
   - 
   - 
