@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Bug Boss
   - Bug
+  - BackGround
   layers:
   - Default
   - TransparentFX
@@ -17,8 +18,7 @@ TagManager:
   - Wall
   - BinaryBullet
   - Player
-
-  - 
+  - BackGround
   - 
   - 
   - 
@@ -45,14 +45,14 @@ TagManager:
     uniqueID: 0
     locked: 0
   - name: BackGround
-    uniqueID: 1283627105
+    uniqueID: 4286232925
     locked: 0
-  - name: player
-    uniqueID: 3127262711
+  - name: Wall
+    uniqueID: 3370134439
     locked: 0
-  - name: Walls
-    uniqueID: 1356817585
+  - name: Ground
+    uniqueID: 3581324689
     locked: 0
-  - name: Floor
-    uniqueID: 3308460573
+  - name: Player
+    uniqueID: 1511759029
     locked: 0
