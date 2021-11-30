@@ -127,7 +127,7 @@ public class PlayerBehavior : MonoBehaviour
         if (phd == Vector3.up) // player head pointing up
             rb2D.velocity = new Vector2(h * playerMovementSpeed, rb2D.velocity.y);
         else if (phd == Vector3.down) // player head pointing down
-            rb2D.velocity = new Vector2(h * playerMovementSpeed * -1, rb2D.velocity.y);
+            rb2D.velocity = new Vector2(h * playerMovementSpeed, rb2D.velocity.y);
         else if (phd == Vector3.right) // player head pointing right
             rb2D.velocity = new Vector2(rb2D.velocity.x, h * playerMovementSpeed * -1);
         else if (phd == Vector3.left) // player head pointing left
@@ -139,10 +139,10 @@ public class PlayerBehavior : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if ( (collision.gameObject.layer == LayerMask.NameToLayer("Ground") && GravityGlitchLevelController.playerHeadUpDirection == Vector3.up) || // 
-             (collision.gameObject.layer == LayerMask.NameToLayer("Wall") && GravityGlitchLevelController.playerHeadUpDirection == Vector3.left) ||
-             (collision.gameObject.layer == LayerMask.NameToLayer("Wall") && GravityGlitchLevelController.playerHeadUpDirection == Vector3.down) ||
-             (collision.gameObject.layer == LayerMask.NameToLayer("Wall") && GravityGlitchLevelController.playerHeadUpDirection == Vector3.right))
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Ground")) // ||
+             //(collision.gameObject.layer == LayerMask.NameToLayer("Wall") && GravityGlitchLevelController.playerHeadUpDirection == Vector3.left) ||
+             //(collision.gameObject.layer == LayerMask.NameToLayer("Wall") && GravityGlitchLevelController.playerHeadUpDirection == Vector3.down) ||
+             //(collision.gameObject.layer == LayerMask.NameToLayer("Wall") && GravityGlitchLevelController.playerHeadUpDirection == Vector3.right))
         {
             isGrounded = true;
         }

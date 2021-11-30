@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering.PostProcessing;
 
-public class GravityGlitchLevelController : MonoBehaviour
+public class GravityGlitchLevelController_old : MonoBehaviour
 {
     /*
      * The glitch effect is achieved using 2 methods:
@@ -20,15 +20,32 @@ public class GravityGlitchLevelController : MonoBehaviour
     [SerializeField]
     private float glitchFullEffectDuration = 0.5f;
 
-    private float gravChangeTimeTracker = 10.0f;
-    private bool gravChangeReady = false;
-    private float secondsUntilGravityChange;
+    [SerializeField]
+    [Range(0, 10)]
+    [Header("How often the gravity change should occur (Seconds). This val >= glitchWarningDuration + glitchFullEffectDuration")]
+    private float gravityChangeFrequency = 3.0f;
+
+    [SerializeField]
+    private bool gravChangeOn = true;
+
+
+    private float gravChangeTimeTracker = 0.0f;
+    private const float grav = 9.8f;
 
     // sequence key:
     //  - u: up (player head facing up)
     //  - r: right (player head facing right)
     //  - d: down (player head facing down)
     //  - l: left (player head facing left)
+    private string[] sequences =
+    {
+        "dlrudlrudldruldrul",
+        "dlrudlrudldruldrul",
+        "dlrudlrudldruldrul"
+    };
+
+    private string currentSequence;
+    private int gravSequenceCounter = 0;
     const string gravityDirections = "dlur"; // reference to each direction to spin character randomly
 
 
@@ -47,40 +64,30 @@ public class GravityGlitchLevelController : MonoBehaviour
     void Start()
     {
         GameObject cam = GameObject.FindGameObjectWithTag("MainCamera");
+        currentSequence = sequences[0];
         player = GameObject.FindGameObjectWithTag("Player");
         postProcessGlitch = cam.GetComponent<PostProcessVolume>();
         glitchPostFX = cam.GetComponent<PostProcess>();
-        secondsUntilGravityChange = glitchFullEffectDuration + glitchWarningDuration;
     }
 
     // Update is called once per frame
     void Update()
     {
         gravChangeTimeTracker += Time.deltaTime;
-        Debug.Log(gravChangeTimeTracker);
 
-        if (!gravChangeReady) return;
+        if (!gravChangeOn) return;
 
-
-        // Change gravity and turn off the warning effect
-        if (gravChangeTimeTracker >= secondsUntilGravityChange)
-        {
-            char d = gravityDirections[Random.Range(0, 4)]; // Pick random direction
-
-            ChangeGravity(d); // change gravity
-
-            gravChangeReady = false;
-
-            // turn off glitch effects
-            postProcessGlitch.weight = 0f;
-            glitchPostFX.waveLength = 99999;
-
-            // reset counter for next gravity change
-            gravChangeTimeTracker = 0;
-            t = 0;
-        }
         // gravity change WARNING effect starts [glitchWarningDuration] seconds before the gravity change
-        else if (gravChangeTimeTracker >= glitchWarningDuration)
+        if (gravChangeTimeTracker >= gravityChangeFrequency - glitchFullEffectDuration - glitchWarningDuration)
+        {
+            //Debug.Log("Starting Warning: " + gravChangeTimeTracker);
+            glitchPostFX.waveLength = Mathf.Lerp(99999, 700, t * 5); // increase the shader wavy effect
+            postProcessGlitch.weight = Mathf.Lerp(0, 0.5f, t * 5); // increase post process graininess to half effect
+            t += Time.deltaTime;
+        }
+
+        // gravity change FULL effect triggers [glitchFullEffectDuration] seconds before the gravity change
+        if (gravChangeTimeTracker >= gravityChangeFrequency - glitchFullEffectDuration)
         {
             //Debug.Log("Starting Full Effect: " + gravChangeTimeTracker);
             postProcessGlitch.weight = 1f; // set post process graininess to full effect
@@ -89,13 +96,26 @@ public class GravityGlitchLevelController : MonoBehaviour
             char d = gravityDirections[Random.Range(0, 4)]; // generate random direction from reference of directions (gravityDirections)
             ChangeGravity(d); // change gravity to the random selection
         }
-        // gravity change FULL effect triggers [glitchFullEffectDuration] seconds before the gravity change
-        else
+
+        // Actual (next in sequence) gravity change occur and glitch effects are turned off
+        if (gravChangeTimeTracker >= gravityChangeFrequency)
         {
-            //Debug.Log("Starting Warning: " + gravChangeTimeTracker);
-            glitchPostFX.waveLength = Mathf.Lerp(99999, 700, t * 5); // increase the shader wavy effect
-            postProcessGlitch.weight = Mathf.Lerp(0, 0.5f, t * 5); // increase post process graininess to half effect
-            t += Time.deltaTime;
+            //Debug.Log("Grav Change / Reset: " + gravChangeTimeTracker);
+            char d = currentSequence[gravSequenceCounter]; // get next direction in sequence
+
+            ChangeGravity(d); // change gravity
+
+            gravSequenceCounter = (gravSequenceCounter + 1) % currentSequence.Length; // increment direction for next gravity change
+
+            // turn off glitch effects
+            postProcessGlitch.weight = 0f;
+            glitchPostFX.waveLength = 99999;
+            //postProcessGlitch.GetComponent<ColorGrading>().hueShift.value = 0f;
+
+
+            // reset counter for next gravity change
+            gravChangeTimeTracker = 0;
+            t = 0;
         }
     }
 
@@ -122,7 +142,7 @@ public class GravityGlitchLevelController : MonoBehaviour
                 gravityDirection = Constants.GRAVITY_LEFT;
                 break;
             case 'l': // (player head facing left)
-                playerHeadUpDirection = Vector3.left;
+                playerHeadUpDirection = Vector3.left; 
                 //Physics2D.gravity = new Vector2(grav, 0);
                 gravityDirection = Constants.GRAVITY_RIGHT;
                 break;
@@ -133,12 +153,6 @@ public class GravityGlitchLevelController : MonoBehaviour
 
         // set the player's up direction 
         player.transform.up = playerHeadUpDirection;
-    }
 
-    public void TryStartGravityGlitch()
-    {
-        if (gravChangeTimeTracker < 10.0f) return;
-
-        gravChangeReady = true;
     }
 }
