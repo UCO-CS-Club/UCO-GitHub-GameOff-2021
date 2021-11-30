@@ -4,9 +4,8 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - GameManager
-  - Bug
   - Bug Boss
+  - Bug
   layers:
   - Default
   - TransparentFX
