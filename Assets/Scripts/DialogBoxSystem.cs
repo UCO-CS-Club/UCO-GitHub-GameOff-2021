@@ -15,7 +15,7 @@ public class DialogBoxSystem : MonoBehaviour
     string story;
     float textSpeed;
     bool textFinished;
-    public GameObject dialogBox;
+    GameObject dialogBox;
     Animator anim;
 
     // Start is called before the first frame update
@@ -31,15 +31,15 @@ public class DialogBoxSystem : MonoBehaviour
     {
         if (isPopUpActive)
         {
-            bool isMouseOneDown = Input.GetMouseButtonDown(0);
+            bool speedUpRequested = Input.GetMouseButtonDown(0);
 
-            if (isMouseOneDown && textFinished)
+            if (speedUpRequested && textFinished)
             {
                 anim.SetTrigger("close");
                 isPopUpActive = false;
                 GameTime.Play();
             }
-            else if (isMouseOneDown)
+            else if (speedUpRequested)
                 textSpeed = fastTextSpeed;
         }
     }
