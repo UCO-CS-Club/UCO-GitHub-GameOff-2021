@@ -40,6 +40,7 @@ public class GravityGlitchLevelController : MonoBehaviour
         "dlrudlrudldruldrul",
         "dlrudlrudldruldrul"
     };
+
     private string currentSequence;
     private int gravSequenceCounter = 0;
     const string gravityDirections = "dlur"; // reference to each direction to spin character randomly
@@ -47,6 +48,7 @@ public class GravityGlitchLevelController : MonoBehaviour
 
     // For controller player and glitch effect(s)
     static public Vector3 playerHeadUpDirection = Vector3.up;
+    static public Vector3 gravityDirection = Constants.GRAVITY_DOWN;
     private GameObject player;
     private PostProcessVolume postProcessGlitch;
 
@@ -120,19 +122,23 @@ public class GravityGlitchLevelController : MonoBehaviour
         {
             case 'd': // Upside down (player head facing down) 
                 playerHeadUpDirection = Vector3.down;
-                Physics2D.gravity = new Vector2(0, grav);
+                //Physics2D.gravity = new Vector2(0, grav);
+                gravityDirection = Constants.GRAVITY_UP;
                 break;
             case 'u': // Rightside up (player head facing up)
                 playerHeadUpDirection = Vector3.up;
-                Physics2D.gravity = new Vector2(0, grav * -1);
+                //Physics2D.gravity = new Vector2(0, grav * -1);
+                gravityDirection = Constants.GRAVITY_DOWN;
                 break;
             case 'r': // (player head facing right)
                 playerHeadUpDirection = Vector3.right;
-                Physics2D.gravity = new Vector2(grav * -1, 0);
+                //Physics2D.gravity = new Vector2(grav * -1, 0);
+                gravityDirection = Constants.GRAVITY_LEFT;
                 break;
             case 'l': // (player head facing left)
                 playerHeadUpDirection = Vector3.left; 
-                Physics2D.gravity = new Vector2(grav, 0);
+                //Physics2D.gravity = new Vector2(grav, 0);
+                gravityDirection = Constants.GRAVITY_RIGHT;
                 break;
             default:
                 playerHeadUpDirection = Vector3.up; // in case switch statement fails
