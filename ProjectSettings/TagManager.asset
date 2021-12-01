@@ -7,6 +7,9 @@ TagManager:
   - Bug Boss
   - Bug
   - BackGround
+  - WORKDammit!
+  - InvertColorBlock
+  - GameManager
   layers:
   - Default
   - TransparentFX

@@ -6,5 +6,15 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    guid: 2cda990e2423bbf4892e6590ba056729
+    path: Assets/Scenes/Title Screen.unity
+    guid: 02ac586184d37c540bcdc8c5002679b6
+  - enabled: 1
+    path: Assets/Scenes/Light_Flicker_TestAssets_map.unity
+    guid: 6638d9c19fb1f3c479dd8517d8783dd2
+  - enabled: 1
+    path: Assets/Scenes/Boss Scene.unity
+    guid: 0db899dd8230cee45b8d4efc0dca89ca
+  - enabled: 1
+    path: Assets/Scenes/Credits.unity
+    guid: bb781bd8b25b79e4c9c92113697cbc7a
   m_configObjects: {}
