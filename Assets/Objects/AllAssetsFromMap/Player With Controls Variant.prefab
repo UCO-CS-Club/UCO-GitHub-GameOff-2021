@@ -57,9 +57,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7533643165695770206, guid: 6467826a488c4db4ba02c182f15df057, type: 3}
       propertyPath: m_Name
-      value: Player With Controls
+      value: Player With Controls Variant
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 1474112265, guid: 6467826a488c4db4ba02c182f15df057, type: 3}
+    - {fileID: 1474112264, guid: 6467826a488c4db4ba02c182f15df057, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 6467826a488c4db4ba02c182f15df057, type: 3}
 --- !u!1 &5901845638637513566 stripped
 GameObject:

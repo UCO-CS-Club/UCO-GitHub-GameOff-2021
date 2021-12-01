@@ -907,7 +907,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe8619fdc72ebee46ae7e0ada43c9213, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  levelScene: Light_Flicker_TestAssets_map
+  levelScene: FirstLevel
   creditsScene: Credits
 --- !u!1 &1261610050
 GameObject:

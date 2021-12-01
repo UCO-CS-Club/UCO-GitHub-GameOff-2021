@@ -130,14 +130,18 @@ public class BugBossBehavior : MonoBehaviour
         }
 
         Vector2 playerOffsetPosition;
-
+        Vector3 charecterScale = transform.localScale;// The reason for this is to allow the Bug To be animate and shift the models direction 
         if (x == -1)
         {
             playerOffsetPosition = new Vector2(transform.position.x - transform.localScale.x * SIDEWAYS_PLAYER_OFFSET, transform.position.y + transform.localScale.y / 2.0f + 0.1f);
+            charecterScale.x = 10;
+            animationSpeed = +1.0f;
         }
         else
         {
             playerOffsetPosition = new Vector2(transform.position.x + transform.localScale.x * SIDEWAYS_PLAYER_OFFSET, transform.position.y + transform.localScale.y / 2.0f + 0.1f);
+            charecterScale.x = -10;
+            animationSpeed = 1.0f;
         }
 
 

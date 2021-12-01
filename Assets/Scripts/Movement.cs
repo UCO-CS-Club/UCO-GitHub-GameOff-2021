@@ -12,7 +12,7 @@ public class Movement : MonoBehaviour
     [SerializeField] public float speed;
     public float jumpVelocity;
     string buttonPressed;
-    private float animationSpeed = 0.0f;
+  
 
     public float dashSpeed;
     private float dashTime;
@@ -23,7 +23,7 @@ public class Movement : MonoBehaviour
     bool startCooldown = false;
     private BoxCollider2D boxCollider;
     public Animator anim;
-
+    private float animationSpeed = 0.0f;
     // Start is called before the first frame update
     void Start()
     {
@@ -70,7 +70,7 @@ public class Movement : MonoBehaviour
             if (isGrounded()) rb.velocity = new Vector2(0, rb.velocity.y);
         }
 
-        if (Input.GetKeyDown(KeyCode.E) && !isDashing)
+        if (Input.GetKeyDown(KeyCode.LeftShift) && !isDashing)
         {
             isDashing = true;
             Dash();

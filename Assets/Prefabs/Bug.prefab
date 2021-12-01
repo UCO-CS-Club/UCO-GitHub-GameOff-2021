@@ -30,7 +30,7 @@ Transform:
   m_GameObject: {fileID: 3517084999978664328}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0.9745802, y: 3.681309, z: 0}
-  m_LocalScale: {x: 2, y: 2, z: 0.3}
+  m_LocalScale: {x: -2, y: 2, z: 0.3}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -54,7 +54,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -76,7 +76,7 @@ SpriteRenderer:
   m_SortingLayer: 4
   m_SortingOrder: 0
   m_Sprite: {fileID: 1729431128870696525, guid: 28f1747c1712ed44db04f8901a819e34, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.9622642, g: 0.9123354, b: 0.9123354, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -104,6 +104,7 @@ MonoBehaviour:
   jumpYForce: 5
   jumpXForce: 10
   lifespanOfBug: 21
+  anim: {fileID: 5164304755001119871}
 --- !u!61 &4787731465103314024
 BoxCollider2D:
   m_ObjectHideFlags: 0

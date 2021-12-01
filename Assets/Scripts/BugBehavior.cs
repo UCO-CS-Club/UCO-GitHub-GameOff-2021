@@ -53,6 +53,13 @@ public class BugBehavior : MonoBehaviour
 
     private bool hasChangedDirectionAlready;
 
+
+    //Adding Animations 
+    // First we need to access the overloaded Animation
+    // Then We change the speend based on dirction 
+    public Animator anim;
+    private float animationSpeed = 0.0f;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -60,16 +67,22 @@ public class BugBehavior : MonoBehaviour
         rb2D = transform.GetComponent<Rigidbody2D>();
         player = GameObject.Find("/PlayerFolder/Player");
         boss = GameObject.Find("/BossFolder/Bug Boss");
-
+        Vector3 charecterScale = transform.localScale;// The reason for this is to allow the Bug To be animate and shift the models direction 
         if (direction == 1)
         {
             goingRight = true;
             goingLeft = false;
+            charecterScale.x = 10;
+            animationSpeed = 1.0f;
+            
         }
         else
         {
             goingLeft = true;
             goingRight = false;
+            charecterScale.x = -10;
+            animationSpeed = +1.0f;
+            
         }
 
         goingUp = false;
@@ -99,6 +112,7 @@ public class BugBehavior : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        anim.SetFloat("Speed", Mathf.Abs(animationSpeed));
         float timeSinceBirth = Time.time;
         if (timeSinceBirth - timeOfBirth >= lifespanOfBug)
         {
