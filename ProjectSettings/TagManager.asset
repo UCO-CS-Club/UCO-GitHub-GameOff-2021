@@ -7,6 +7,9 @@ TagManager:
 <<<<<<< HEAD
   - Bug Boss
   - Bug
+  - WORKDammit!
+  - InvertColorBlock
+  - GameManager
   - BackGround
   - WORKDammit!
   - InvertColorBlock
@@ -26,6 +29,7 @@ TagManager:
   - Wall
   - BinaryBullet
   - Player
+  - PostProcessing
   - BackGround
 =======
   - 

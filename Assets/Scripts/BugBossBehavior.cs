@@ -17,6 +17,8 @@ public class BugBossBehavior : MonoBehaviour
     [SerializeField] private float gravity = 9.8f;
     [Tooltip("This value serves as a timer to decrement the other timer so that bugs start appearing sooner as the game progresses")]
     [SerializeField] private float decrementTimeBetweenBugs = 10;
+    [Range(0, 100)]
+    [SerializeField] private int health = 100;
 
     private float timeSinceLastBugRelease;
     private float timeSinceLastDecrement;
@@ -36,7 +38,6 @@ public class BugBossBehavior : MonoBehaviour
     // horizontal direction of the boss
     private float x;
 
-    private int health;
 
     // Need a way to show him moving
     public Animator anim;
@@ -55,16 +56,14 @@ public class BugBossBehavior : MonoBehaviour
 
         floorAlreadyDetected = false;
         timeSinceLastDecrement = Time.time;
-        timeSinceLastBugRelease = Time.time;
 
-        health = 100;
     }
 
     // Update is called once per frame
     void Update()
     {
         float currentTime = Time.time;
-        anim.SetFloat("Speed", Mathf.Abs(animationSpeed));
+        //anim.SetFloat("Speed", Mathf.Abs(animationSpeed));
         if (currentTime - timeSinceLastBugRelease >= timeBetweenBugs)
         {
             //Time.timeScale = 0;

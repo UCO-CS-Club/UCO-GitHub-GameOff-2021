@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class BugKillTracker : MonoBehaviour
 {
-    [SerializeField] private int numberOfBugsKilledBeforeReversingTheirAttack = 30;
+    [SerializeField] private int numberOfBugsKilledBeforeReversingTheirAttack = 5;
 
     private int numberOfBugsKilled;
 
@@ -17,19 +17,21 @@ public class BugKillTracker : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (numberOfBugsKilled == numberOfBugsKilledBeforeReversingTheirAttack)
+        if (numberOfBugsKilled >= numberOfBugsKilledBeforeReversingTheirAttack)
         {
-            numberOfBugsKilled = 0;
             GameObject[] bugs = GameObject.FindGameObjectsWithTag("Bug");
             foreach (var bug in bugs)
             {
-                bug.GetComponent<BugBehavior>().SetAttackingBoss();
+                bug.GetComponent<BugBehavior>().SetAttackingBoss(true);
             }
+
+            numberOfBugsKilled = 0;
         }
     }
 
     public void KillBug()
     {
         numberOfBugsKilled++;
+        Debug.Log("# of Bugs Killed: " + numberOfBugsKilled);
     }
 }
