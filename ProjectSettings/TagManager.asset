@@ -6,6 +6,9 @@ TagManager:
   tags:
   - Bug Boss
   - Bug
+  - WORKDammit!
+  - InvertColorBlock
+  - GameManager
   - BackGround
   layers:
   - Default
@@ -18,6 +21,7 @@ TagManager:
   - Wall
   - BinaryBullet
   - Player
+  - PostProcessing
   - BackGround
   - 
   - 

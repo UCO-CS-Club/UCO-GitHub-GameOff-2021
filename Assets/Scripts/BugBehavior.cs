@@ -123,8 +123,6 @@ public class BugBehavior : MonoBehaviour
 
         fixedFramesSinceLastOpenCornerMovementUpdate--;
 
-
-
         // Player detected in range
         if (!attackingBoss && isGrounded)
         {
@@ -407,26 +405,28 @@ public class BugBehavior : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-
         LayerMask collisionLayer = collision.gameObject.layer;
+
         if (collisionLayer == floorLayer || collisionLayer == wallLayer)
         {
             isGrounded = true;
             return;
         }
 
+
         if (!attackingBoss && collision.gameObject.CompareTag("Bug Boss"))
         {
             Physics2D.IgnoreCollision(transform.GetComponent<Collider2D>(), collision.collider);
             return;
         }
-
         else if (attackingBoss && collision.gameObject.CompareTag("Bug Boss"))
         {
+            GameObject.Find("/GameManager").GetComponent<GravityGlitchLevelController>().TryStartGravityGlitch();
             collision.gameObject.GetComponent<BugBossBehavior>().TakeDamage();
             BugDeath();
             return;
         }
+
 
         if (collision.gameObject.CompareTag("Bug"))
         {
@@ -434,18 +434,17 @@ public class BugBehavior : MonoBehaviour
             return;
         }
 
+
         if (!attackingBoss && collision.gameObject.layer.Equals(LayerMask.NameToLayer("BinaryBullet")))
         {
             GameObject.Find("/Bug Kill Tracker").GetComponent<BugKillTracker>().KillBug();
             BugDeath();
             return;
         } 
-
         else if (!attackingBoss && collision.gameObject.Equals(player))
         {
             BugDeath();
         }
-
         else if (attackingBoss && collision.gameObject.Equals(player))
         {
             Physics2D.IgnoreCollision(transform.GetComponent<Collider2D>(), collision.collider);
@@ -455,9 +454,9 @@ public class BugBehavior : MonoBehaviour
 
     }
 
-    public void SetAttackingBoss()
+    public void SetAttackingBoss(bool attackingBoss)
     {
-        attackingBoss = true;
+        this.attackingBoss = true;
     }
 
     public bool GetAttackingBoss()
