@@ -10,7 +10,7 @@ public class BugBossBehavior : MonoBehaviour
     [SerializeField] private int numberOfBugsReleased = 5;
     [Tooltip("The time elapsed between the last bug release and the next bug release")]
     [Range(0.1f, 30)]
-    [SerializeField] private float timeBetweenBugs = 12;
+    [SerializeField] private float timeBetweenBugs = 12f;
     [Range(0, 50)]
     [SerializeField] private float movementSpeed = 4;
     [SerializeField] private float jumpHeight = 160.0f;
@@ -55,6 +55,7 @@ public class BugBossBehavior : MonoBehaviour
 
         floorAlreadyDetected = false;
         timeSinceLastDecrement = Time.time;
+        timeSinceLastBugRelease = Time.time;
 
         health = 100;
     }
@@ -66,10 +67,11 @@ public class BugBossBehavior : MonoBehaviour
         anim.SetFloat("Speed", Mathf.Abs(animationSpeed));
         if (currentTime - timeSinceLastBugRelease >= timeBetweenBugs)
         {
+            //Time.timeScale = 0;
             timeSinceLastBugRelease = currentTime;
             for (int i = 0; i < numberOfBugsReleased; i++)
             {
-                // The very left of the bug boss
+                /*// The very left of the bug boss
                 float posX = transform.position.x;
                 float halfWidth = transform.localScale.x / 2.0f;
                 float bugWidth = bug.transform.localScale.x;
@@ -85,9 +87,9 @@ public class BugBossBehavior : MonoBehaviour
                 float posY = transform.position.y;
                 float halfHeight = transform.localScale.y / 2.0f;
                 float halfBugHeight = bug.transform.localScale.y / 2.0f;
-                posY = posY - halfHeight + halfBugHeight;
+                posY = posY - halfHeight + halfBugHeight;*/
 
-                Instantiate(bug, new Vector3(posX, posY, 0), new Quaternion());
+                Instantiate(bug, transform.position, new Quaternion());
             }
         }
 
