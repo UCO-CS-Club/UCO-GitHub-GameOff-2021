@@ -62,7 +62,7 @@ public class BugBossBehavior : MonoBehaviour
     void Update()
     {
         float currentTime = Time.time;
-        anim.SetFloat("Speed", Mathf.Abs(animationSpeed));
+        //anim.SetFloat("Speed", Mathf.Abs(animationSpeed));
         if (currentTime - timeSinceLastBugRelease >= timeBetweenBugs)
         {
             timeSinceLastBugRelease = currentTime;

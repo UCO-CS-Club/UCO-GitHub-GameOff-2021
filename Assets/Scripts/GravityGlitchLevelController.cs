@@ -57,9 +57,9 @@ public class GravityGlitchLevelController : MonoBehaviour
     void Update()
     {
         gravChangeTimeTracker += Time.deltaTime;
-        Debug.Log(gravChangeTimeTracker);
 
         if (!gravChangeReady) return;
+        Debug.Log(gravChangeTimeTracker);
 
 
         // Change gravity and turn off the warning effect
@@ -140,5 +140,6 @@ public class GravityGlitchLevelController : MonoBehaviour
         if (gravChangeTimeTracker < 10.0f) return;
 
         gravChangeReady = true;
+        gravChangeTimeTracker = 0.0f;
     }
 }

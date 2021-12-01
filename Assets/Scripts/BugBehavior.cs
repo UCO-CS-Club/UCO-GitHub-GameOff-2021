@@ -421,6 +421,7 @@ public class BugBehavior : MonoBehaviour
         }
         else if (attackingBoss && collision.gameObject.CompareTag("Bug Boss"))
         {
+            Debug.Log("Boss Hit");
             GameObject.Find("/GameManager").GetComponent<GravityGlitchLevelController>().TryStartGravityGlitch();
             collision.gameObject.GetComponent<BugBossBehavior>().TakeDamage();
             BugDeath();

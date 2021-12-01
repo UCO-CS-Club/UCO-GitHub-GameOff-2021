@@ -145,7 +145,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerMovementSpeed: 14
-  gravity: 9.8
   jumpHeight: 180
   binaryBullet: {fileID: 7898603022227899164, guid: d63d75fd14ee44b448da54cd47d75169, type: 3}
   bulletSpeed: 2000
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 192
