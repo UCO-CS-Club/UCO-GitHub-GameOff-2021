@@ -10,7 +10,7 @@ public class BugBossBehavior : MonoBehaviour
     [SerializeField] private int numberOfBugsReleased = 5;
     [Tooltip("The time elapsed between the last bug release and the next bug release")]
     [Range(0.1f, 30)]
-    [SerializeField] private float timeBetweenBugs = 12;
+    [SerializeField] private float timeBetweenBugs = 12f;
     [Range(0, 50)]
     [SerializeField] private float movementSpeed = 4;
     [SerializeField] private float jumpHeight = 160.0f;
@@ -56,6 +56,7 @@ public class BugBossBehavior : MonoBehaviour
 
         floorAlreadyDetected = false;
         timeSinceLastDecrement = Time.time;
+
     }
 
     // Update is called once per frame
@@ -65,10 +66,11 @@ public class BugBossBehavior : MonoBehaviour
         //anim.SetFloat("Speed", Mathf.Abs(animationSpeed));
         if (currentTime - timeSinceLastBugRelease >= timeBetweenBugs)
         {
+            //Time.timeScale = 0;
             timeSinceLastBugRelease = currentTime;
             for (int i = 0; i < numberOfBugsReleased; i++)
             {
-                // The very left of the bug boss
+                /*// The very left of the bug boss
                 float posX = transform.position.x;
                 float halfWidth = transform.localScale.x / 2.0f;
                 float bugWidth = bug.transform.localScale.x;
@@ -84,9 +86,9 @@ public class BugBossBehavior : MonoBehaviour
                 float posY = transform.position.y;
                 float halfHeight = transform.localScale.y / 2.0f;
                 float halfBugHeight = bug.transform.localScale.y / 2.0f;
-                posY = posY - halfHeight + halfBugHeight;
+                posY = posY - halfHeight + halfBugHeight;*/
 
-                Instantiate(bug, new Vector3(posX, posY, 0), new Quaternion());
+                Instantiate(bug, transform.position, new Quaternion());
             }
         }
 
@@ -127,14 +129,18 @@ public class BugBossBehavior : MonoBehaviour
         }
 
         Vector2 playerOffsetPosition;
-
+        Vector3 charecterScale = transform.localScale;// The reason for this is to allow the Bug To be animate and shift the models direction 
         if (x == -1)
         {
             playerOffsetPosition = new Vector2(transform.position.x - transform.localScale.x * SIDEWAYS_PLAYER_OFFSET, transform.position.y + transform.localScale.y / 2.0f + 0.1f);
+            charecterScale.x = 10;
+            animationSpeed = +1.0f;
         }
         else
         {
             playerOffsetPosition = new Vector2(transform.position.x + transform.localScale.x * SIDEWAYS_PLAYER_OFFSET, transform.position.y + transform.localScale.y / 2.0f + 0.1f);
+            charecterScale.x = -10;
+            animationSpeed = 1.0f;
         }
 
 
