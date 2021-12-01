@@ -101,17 +101,10 @@ MonoBehaviour:
   m_AdvancedMode: 0
   shadows:
     m_OverrideState: 1
-<<<<<<< HEAD
-    m_Value: {x: 0.9268008, y: 1, z: 0.93221635, w: -0.27820706}
-  midtones:
-    m_OverrideState: 1
-    m_Value: {x: 0.90207213, y: 1, z: 0.9343205, w: 0}
-=======
-    m_Value: {x: 0.933163, y: 1, z: 0.9291035, w: -0.27820706}
+    m_Value: {x: 0.9705533, y: 1, z: 0.9700041, w: -0.27820706}
   midtones:
     m_OverrideState: 0
     m_Value: {x: 0.951438, y: 1, z: 0.93984246, w: 0}
->>>>>>> 67ee329a874bd499f28876ee8b0c8b2aa1d9f94d
   highlights:
     m_OverrideState: 0
     m_Value: {x: 0.90467155, y: 0.99394053, z: 1, w: -0.40185463}
@@ -169,11 +162,7 @@ MonoBehaviour:
     min: 0
   intensity:
     m_OverrideState: 1
-<<<<<<< HEAD
-    m_Value: 4.99
-=======
     m_Value: 2
->>>>>>> 67ee329a874bd499f28876ee8b0c8b2aa1d9f94d
     min: 0
   scatter:
     m_OverrideState: 0

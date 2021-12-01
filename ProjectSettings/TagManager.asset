@@ -4,19 +4,12 @@
 TagManager:
   serializedVersion: 2
   tags:
-<<<<<<< HEAD
   - Bug Boss
   - Bug
   - WORKDammit!
   - InvertColorBlock
   - GameManager
   - BackGround
-  - WORKDammit!
-  - InvertColorBlock
-  - GameManager
-=======
-  - WORKDammit!
->>>>>>> 67ee329a874bd499f28876ee8b0c8b2aa1d9f94d
   layers:
   - Default
   - TransparentFX
@@ -24,20 +17,12 @@ TagManager:
   - 
   - Water
   - UI
-<<<<<<< HEAD
   - Ground
   - Wall
   - BinaryBullet
   - Player
   - PostProcessing
   - BackGround
-=======
-  - 
-  - Walls
-  - Ground
-  - Lighing
-  - 
->>>>>>> 67ee329a874bd499f28876ee8b0c8b2aa1d9f94d
   - 
   - 
   - 
@@ -64,7 +49,6 @@ TagManager:
     uniqueID: 0
     locked: 0
   - name: BackGround
-<<<<<<< HEAD
     uniqueID: 4286232925
     locked: 0
   - name: Wall
@@ -75,16 +59,4 @@ TagManager:
     locked: 0
   - name: Player
     uniqueID: 1511759029
-=======
-    uniqueID: 1283627105
-    locked: 0
-  - name: player
-    uniqueID: 3127262711
-    locked: 0
-  - name: Walls
-    uniqueID: 1356817585
-    locked: 0
-  - name: Floor
-    uniqueID: 3308460573
->>>>>>> 67ee329a874bd499f28876ee8b0c8b2aa1d9f94d
     locked: 0
