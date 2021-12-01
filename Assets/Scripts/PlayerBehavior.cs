@@ -8,14 +8,15 @@ public class PlayerBehavior : MonoBehaviour
     [SerializeField] private float jumpHeight = 160.0f;
     [SerializeField] private GameObject binaryBullet;
     [SerializeField] private float bulletSpeed = 2000;
+    [SerializeField] LayerMask groundLayer;
 
     private Rigidbody2D rb2D;
     private float gravity;
-    private bool isGrounded;
     private bool playerJumpKeyDown;
     private float velocity;
     private GameObject healthBar;
     private Vector2 currentGravityDirection;
+    BoxCollider2D collider;
 
     private string binaryGunString = "0101010101000011010011110010000001000010011010010110011100100000010000100111001001100001011010010110111001110011"; // UCO Big Brains
     private int currentBinaryBullet;
@@ -34,7 +35,6 @@ public class PlayerBehavior : MonoBehaviour
         rb2D = transform.GetComponent<Rigidbody2D>();
         //rb2D.gravityScale = 9;
         gravity = Constants.GRAVITY;
-        isGrounded = false;
         playerJumpKeyDown = false;
         velocity = 1;
         healthBar = GameObject.Find("/Main Camera/Health Bar Parent/Health Bar");
@@ -47,6 +47,7 @@ public class PlayerBehavior : MonoBehaviour
         bulletsRemaining = binaryGunString.Length;
         timeSinceLastBulletFired = SECONDS_BETWEEN_BINARY_BULLETS;
         lastFacingDirection = 1;
+        collider = GetComponent<BoxCollider2D>();
     }
 
     // Update is called once per frame
@@ -54,9 +55,13 @@ public class PlayerBehavior : MonoBehaviour
     {
         velocity = -0.1f;
 
-        if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
+        if (Input.GetKeyDown(KeyCode.Space))
         {
             playerJumpKeyDown = true;
+        }
+        else if (Input.GetKeyUp(KeyCode.Space))
+        {
+            playerJumpKeyDown = false;
         }
 
         if (Input.GetKeyDown(KeyCode.LeftShift))
@@ -76,7 +81,7 @@ public class PlayerBehavior : MonoBehaviour
         // Simulating Gravity: We are doing this ourselves so that we can isolate the gravity change to just the player.
         rb2D.AddForce(GravityGlitchLevelController.gravityDirection);
 
-        if (isGrounded)
+        if (isGrounded())
         {
             velocity = 0;
 
@@ -112,7 +117,14 @@ public class PlayerBehavior : MonoBehaviour
         GameObject bullet = Instantiate(binaryBullet, transform.position, new Quaternion()); // TODO figure out rotation next
 
         bullet.GetComponent<BinaryBulletBehavior>().SetText(binary);
-        bullet.GetComponent<Rigidbody2D>().velocity = Vector2.left * -lastFacingDirection * bulletSpeed * Time.deltaTime;
+        Vector3 gravDirection = GravityGlitchLevelController.gravityDirection;
+        if (gravDirection == Constants.GRAVITY_DOWN || gravDirection == Constants.GRAVITY_UP)
+            bullet.GetComponent<Rigidbody2D>().velocity = Vector2.left * -lastFacingDirection * bulletSpeed * Time.deltaTime;
+        else if (gravDirection == Constants.GRAVITY_RIGHT)
+            bullet.GetComponent<Rigidbody2D>().velocity = Vector2.down * -lastFacingDirection * bulletSpeed * Time.deltaTime;
+        else if (gravDirection == Constants.GRAVITY_LEFT)
+            bullet.GetComponent<Rigidbody2D>().velocity = Vector2.up * -lastFacingDirection * bulletSpeed * Time.deltaTime;
+
 
 
         currentBinaryBullet++;
@@ -139,15 +151,12 @@ public class PlayerBehavior : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.layer == LayerMask.NameToLayer("Ground")) // ||
-             //(collision.gameObject.layer == LayerMask.NameToLayer("Wall") && GravityGlitchLevelController.playerHeadUpDirection == Vector3.left) ||
-             //(collision.gameObject.layer == LayerMask.NameToLayer("Wall") && GravityGlitchLevelController.playerHeadUpDirection == Vector3.down) ||
-             //(collision.gameObject.layer == LayerMask.NameToLayer("Wall") && GravityGlitchLevelController.playerHeadUpDirection == Vector3.right))
-        {
-            isGrounded = true;
-        }
+        //if (collision.gameObject.layer == LayerMask.NameToLayer("Ground"))
+        //{
+        //    isGrounded = true;
+        //}
 
-        else if (collision.gameObject.tag.Equals("Bug"))
+        if (collision.gameObject.tag.Equals("Bug"))
         {
             HealthBarBehavior hbb = healthBar.GetComponent<HealthBarBehavior>();
             hbb.TakeDamage(0.23f);
@@ -180,13 +189,13 @@ public class PlayerBehavior : MonoBehaviour
         Destroy(this.gameObject);
     }
 
-    private void OnCollisionExit2D(Collision2D collision)
-    {
-        if (collision.gameObject.layer == LayerMask.NameToLayer("Ground"))
-        {
-            isGrounded = false;
-        }
-    }
+    //private void OnCollisionExit2D(Collision2D collision)
+    //{
+    //    if (collision.gameObject.layer == LayerMask.NameToLayer("Ground"))
+    //    {
+    //        isGrounded = false;
+    //    }
+    //}
 
     private void Jump()
     {
@@ -201,7 +210,14 @@ public class PlayerBehavior : MonoBehaviour
             rb2D.AddForce(new Vector2(velocity * gravity, 0));
         else if (phd == Vector3.left)
             rb2D.AddForce(new Vector2(velocity * gravity * -1, 0));
+    }
 
-        playerJumpKeyDown = false;
+    private bool isGrounded()
+    {
+        Vector3 phd = GravityGlitchLevelController.playerHeadUpDirection * -1;
+
+        RaycastHit2D raycastHit = Physics2D.BoxCast(collider.bounds.center, collider.bounds.size, 0, phd, 0.1f, groundLayer);
+        Debug.Log(raycastHit.collider != null);
+        return raycastHit.collider != null;
     }
 }

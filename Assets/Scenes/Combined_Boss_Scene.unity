@@ -826,7 +826,7 @@ GameObject:
   - component: {fileID: 733788379}
   - component: {fileID: 733788378}
   - component: {fileID: 733788377}
-  m_Layer: 7
+  m_Layer: 10
   m_Name: Main Camera
   m_TagString: MainCamera
   m_Icon: {fileID: 0}
@@ -913,7 +913,7 @@ MonoBehaviour:
   volumeTrigger: {fileID: 733788383}
   volumeLayer:
     serializedVersion: 2
-    m_Bits: 128
+    m_Bits: 1024
   stopNaNPropagation: 1
   finalBlitToCameraTarget: 0
   antialiasingMode: 0
@@ -1224,7 +1224,7 @@ GameObject:
   - component: {fileID: 1252946343}
   - component: {fileID: 1252946345}
   - component: {fileID: 1252946344}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Health Bar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1317,7 +1317,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1256184049}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Health Bar Parent
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1743,7 +1743,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1828601145}
   - component: {fileID: 1828601146}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Square
   m_TagString: Untagged
   m_Icon: {fileID: 0}
