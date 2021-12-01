@@ -201,7 +201,7 @@ QualitySettings:
     skinWeights: 255
     textureQuality: 0
     anisotropicTextures: 2
-    antiAliasing: 2
+    antiAliasing: 0
     softParticles: 1
     softVegetation: 1
     realtimeReflectionProbes: 1
@@ -222,5 +222,9 @@ QualitySettings:
     resolutionScalingFixedDPIFactor: 1
     customRenderPipeline: {fileID: 0}
     excludedTargetPlatforms: []
+<<<<<<< HEAD
   m_PerPlatformDefaultQuality:
     Standalone: 0
+=======
+  m_PerPlatformDefaultQuality: {}
+>>>>>>> 67ee329a874bd499f28876ee8b0c8b2aa1d9f94d
