@@ -9,7 +9,6 @@ public class DialogBoxTrigger : MonoBehaviour
     private bool interactKeyPressed;
     private bool inInteractRange = false;
 
-
     private void Start()
     {
         interactKeyPressed = false;
