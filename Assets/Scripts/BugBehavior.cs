@@ -130,6 +130,11 @@ public class BugBehavior : MonoBehaviour
             Vector2 unitVectorInTheDirectionOfThePlayer = (player.transform.position - transform.position).normalized;
             Vector2 originOfRayOutsideOfThisCollider = (Vector2)transform.position + unitVectorInTheDirectionOfThePlayer;
             var rayToPlayer = Physics2D.Raycast(originOfRayOutsideOfThisCollider, unitVectorInTheDirectionOfThePlayer, rb2D.Distance(player.gameObject.GetComponent<Collider2D>()).distance);
+            if (rayToPlayer == null)
+            {
+                return;
+            }
+            
             var distanceToPlayer = rayToPlayer.collider.gameObject.name.Equals("Player") ? rayToPlayer.distance : 10000;
 
             if (distanceToPlayer < distanceBeforeJumpingAtPlayer)

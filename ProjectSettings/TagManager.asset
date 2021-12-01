@@ -9,6 +9,7 @@ TagManager:
   - WORKDammit!
   - InvertColorBlock
   - GameManager
+  - BackGround
   layers:
   - Default
   - TransparentFX
@@ -21,6 +22,7 @@ TagManager:
   - BinaryBullet
   - Player
   - PostProcessing
+  - BackGround
   - 
   - 
   - 
@@ -45,4 +47,16 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: BackGround
+    uniqueID: 4286232925
+    locked: 0
+  - name: Wall
+    uniqueID: 3370134439
+    locked: 0
+  - name: Ground
+    uniqueID: 3581324689
+    locked: 0
+  - name: Player
+    uniqueID: 1511759029
     locked: 0

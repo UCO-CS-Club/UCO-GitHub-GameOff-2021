@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 1241281101015264760}
   - component: {fileID: 1241281101015264761}
   - component: {fileID: 1241281101015264519}
+  - component: {fileID: 6502552192804404441}
   m_Layer: 0
   m_Name: Bug Boss
   m_TagString: Bug Boss
@@ -151,3 +152,24 @@ MonoBehaviour:
   jumpHeight: 180
   gravity: 9.8
   decrementTimeBetweenBugs: 10
+  health: 100
+  anim: {fileID: 6502552192804404441}
+--- !u!95 &6502552192804404441
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1241281101015264764}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 0}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0

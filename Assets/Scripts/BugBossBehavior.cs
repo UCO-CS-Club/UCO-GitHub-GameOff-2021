@@ -39,6 +39,10 @@ public class BugBossBehavior : MonoBehaviour
     private float x;
 
 
+    // Need a way to show him moving
+    public Animator anim;
+    private float animationSpeed = 0.0f;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -58,7 +62,7 @@ public class BugBossBehavior : MonoBehaviour
     void Update()
     {
         float currentTime = Time.time;
-
+        anim.SetFloat("Speed", Mathf.Abs(animationSpeed));
         if (currentTime - timeSinceLastBugRelease >= timeBetweenBugs)
         {
             timeSinceLastBugRelease = currentTime;
